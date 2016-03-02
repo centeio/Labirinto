@@ -81,14 +81,14 @@ public class Maze {
 			hero.undoMove(dir);
 		
 		//Hero got sword
-		if(hero.getPosY() == sword.getPosY() && hero.getPosX() == sword.getPosX()){
+		if(hero.getPosition().equals(sword.getPosition())){
 			hero.arm();
 			sword.disappear();
 			status = MazeStatus.HeroArmed;
 		}
 		
 		//Hero died
-		if(hero.getSymbol() == 'H' && dragon.getSymbol() == 'D'
+		if(status == MazeStatus.HeroUnarmed
 								&&  hero.getPosY() >= dragon.getPosY() - 1 
 								&&  hero.getPosY() <= dragon.getPosY() + 1 
 								&& hero.getPosX() >= dragon.getPosX()- 1
@@ -97,19 +97,20 @@ public class Maze {
 			return 2;
 		}
 		//Hero killed dragon
-		if(hero.getSymbol() == 'A' &&  hero.getPosY() == dragon.getPosY() && hero.getPosX() == dragon.getPosX()){
+		if(status == MazeStatus.HeroArmed &&  hero.getPosition().equals(dragon.getPosition())){
 			dragon.kill();
 			status = MazeStatus.HeroSlayed;
 		}
 		
 		//Hero kills dragon and leaves
-		if(dragon.getSymbol() == ' ' && hero.getPosY() == exit.getPosY() && hero.getPosX() == exit.getPosX()){
+		if(status == MazeStatus.HeroSlayed && hero.getPosition().equals(exit.getPosition())){
 			status = MazeStatus.HeroWon;
 			return 1;
 		}
 		
 		return 0;
 	}
+	
 	public String toString(){
 		char[][] board = new char[maze.length][];
 		String str = new String();

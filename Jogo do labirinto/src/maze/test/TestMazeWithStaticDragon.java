@@ -88,6 +88,13 @@ public class TestMazeWithStaticDragon {
 		
 	}
 	
+	@Test
+	public void testBuildDefaultAndPrint() {
+		Maze maze = new Maze(1);
+
+		System.out.println(maze);
+	}
+	
 }
 
 
