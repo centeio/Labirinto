@@ -22,20 +22,72 @@ public class TestMazeWithStaticDragon {
 		maze.update('o');
 		assertEquals(new Point(2,1), maze.getHeroPosition());
 	}
+
 	@Test
 	public void testMoveHeroToWallCell() {
 		Maze maze = new Maze(m1);
-		assertEquals(new Point(3,1), maze.getHeroPosition());
 		maze.update('n');
 		assertEquals(new Point(3,1), maze.getHeroPosition());
 	}
-/*	@Test
+	
+	@Test
+	public void testHeroGetsSword() {
+		Maze maze = new Maze(m1);
+		assertEquals(new Point(3,1), maze.getHeroPosition());
+		maze.update('o');
+		maze.update('o');
+		maze.update('s');
+		maze.update('s');
+		
+		assertEquals(MazeStatus.HeroArmed, maze.getStatus());
+	}
+	
+	@Test
 	public void testHeroDies() {
 		Maze maze = new Maze(m1);
 		assertEquals(MazeStatus.HeroUnarmed, maze.getStatus());
-		maze.moveHeroDown();
+		maze.update('s');
 		assertEquals(MazeStatus.HeroDied, maze.getStatus());
-	}*/
+	}
+	
+	@Test
+	public void testHeroSlaysDragon() {
+		Maze maze = new Maze(m1);
+		assertEquals(new Point(3,1), maze.getHeroPosition());
+		maze.update('o');
+		maze.update('o');
+		maze.update('s');
+		maze.update('s');
+		assertEquals(MazeStatus.HeroArmed, maze.getStatus());
+		
+		maze.update('e');
+		maze.update('e');
+		assertEquals(MazeStatus.HeroSlayed, maze.getStatus());
+		
+	}
+	
+	@Test
+	public void testHeroWins() {
+		Maze maze = new Maze(m1);
+		assertEquals(new Point(3,1), maze.getHeroPosition());
+		maze.update('o');
+		maze.update('o');
+		maze.update('s');
+		maze.update('s');
+		assertEquals(MazeStatus.HeroArmed, maze.getStatus());
+		
+		maze.update('e');
+		maze.update('e');
+		assertEquals(MazeStatus.HeroSlayed, maze.getStatus());
+		
+		maze.update('e');
+		maze.update('n');
+		maze.update('n');
+		maze.update('e');
+		assertEquals(MazeStatus.HeroWon, maze.getStatus());
+		
+	}
+	
 }
 
 

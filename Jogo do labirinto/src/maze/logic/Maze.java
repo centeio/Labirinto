@@ -5,6 +5,7 @@ import java.awt.Point;
 public class Maze {
 	private static final int STAY = 4;
 	private Mode mode;
+	private MazeStatus status;
 	private Hero hero;
 	private Dragon dragon;
 	private Sword sword;
@@ -44,6 +45,7 @@ public class Maze {
 					break;					
 				}
 		
+		status = MazeStatus.HeroUnarmed;
 		mode = Mode.STILL;
 	}
 	public Maze(int mode){
@@ -62,6 +64,7 @@ public class Maze {
 			this.mode = Mode.SLEEP;
 			break;
 		}
+		status = MazeStatus.HeroUnarmed;
 	}
 	
 	public int update(char dir){
@@ -81,6 +84,7 @@ public class Maze {
 		if(hero.getPosY() == sword.getPosY() && hero.getPosX() == sword.getPosX()){
 			hero.arm();
 			sword.disappear();
+			status = MazeStatus.HeroArmed;
 		}
 		
 		//Hero died
@@ -88,16 +92,21 @@ public class Maze {
 								&&  hero.getPosY() >= dragon.getPosY() - 1 
 								&&  hero.getPosY() <= dragon.getPosY() + 1 
 								&& hero.getPosX() >= dragon.getPosX()- 1
-								&& hero.getPosX() <= dragon.getPosX()+ 1)
+								&& hero.getPosX() <= dragon.getPosX()+ 1){
+			status = MazeStatus.HeroDied;
 			return 2;
-		
+		}
 		//Hero killed dragon
-		if(hero.getSymbol() == 'A' &&  hero.getPosY() == dragon.getPosY() && hero.getPosX() == dragon.getPosX())
+		if(hero.getSymbol() == 'A' &&  hero.getPosY() == dragon.getPosY() && hero.getPosX() == dragon.getPosX()){
 			dragon.kill();
+			status = MazeStatus.HeroSlayed;
+		}
 		
 		//Hero kills dragon and leaves
-		if(dragon.getSymbol() == ' ' && hero.getPosY() == exit.getPosY() && hero.getPosX() == exit.getPosX())
+		if(dragon.getSymbol() == ' ' && hero.getPosY() == exit.getPosY() && hero.getPosX() == exit.getPosX()){
+			status = MazeStatus.HeroWon;
 			return 1;
+		}
 		
 		return 0;
 	}
@@ -129,5 +138,9 @@ public class Maze {
 	
 	public Point getHeroPosition(){
 		return hero.getPosition();
+	}
+	
+	public MazeStatus getStatus(){
+		return status;
 	}
 }
