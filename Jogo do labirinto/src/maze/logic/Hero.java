@@ -4,9 +4,6 @@ public class Hero extends Piece{
 	public Hero(int x, int y){
 		super(x,y,'H');
 	}
-	public Hero(){
-		super(1,1,'H');
-	}
 	
 	public void move(char dir){
 		switch(dir){

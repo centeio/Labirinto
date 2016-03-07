@@ -8,6 +8,16 @@ public class Game {
 	public static void main(String[] args) {
 		int mode;
 		int gameState = 0;
+		char[][] board = {{'X','X','X','X','X','X','X','X','X','X'},
+						  {'X','H',' ',' ',' ',' ',' ',' ',' ','X'},
+						  {'X',' ','X','X',' ','X',' ','X',' ','X'},
+						  {'X','D','X','X',' ','X',' ','X',' ','X'},
+						  {'X',' ','X','X',' ','X',' ','X',' ','X'},
+						  {'X',' ',' ',' ',' ',' ',' ','X',' ','S'},
+						  {'X',' ','X','X',' ','X',' ','X',' ','X'},
+						  {'X',' ','X','X',' ','X',' ','X',' ','X'},
+						  {'X','E','X','X',' ',' ',' ',' ',' ','X'},
+						  {'X','X','X','X','X','X','X','X','X','X'}};
 		
 		Scanner s = new Scanner(System.in);
 		
@@ -17,7 +27,7 @@ public class Game {
 				+"\n\t3.Com adormecimento");
 		mode = s.nextInt();
 		
-		Maze maze = new Maze(mode);
+		Maze maze = new Maze(board, mode);
 		
 		System.out.println(maze);
 		

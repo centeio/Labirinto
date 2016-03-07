@@ -9,7 +9,7 @@ public class Dragon extends Piece{
 	private static final int RIGHT = 3;
 	private static final int STAY = 4;
 	
-	private enum State{
+	public enum State{
 		AWAKE, ASLEEP, DEAD
 	}
 	
@@ -20,10 +20,6 @@ public class Dragon extends Piece{
 		state = State.AWAKE;
 	}
 
-	public Dragon(){
-		super(1,3,'D');
-		state = State.AWAKE;
-	}
 	public void kill(){
 		state = State.DEAD;
 		symbol = ' ';
@@ -90,5 +86,9 @@ public class Dragon extends Piece{
 		case RIGHT:
 			posX--;	
 		}
+	}
+	
+	public State getStatus(){
+		return state;
 	}
 }

@@ -5,10 +5,6 @@ public class Sword extends Piece{
 		super(x,y,'E');
 	}
 	
-	public Sword(){
-		super(1,8,'E');
-	}
-	
 	public void disappear(){
 		symbol = ' ';
 	}

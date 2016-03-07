@@ -10,18 +10,9 @@ public class Maze {
 	private Dragon dragon;
 	private Sword sword;
 	private Exit exit;
-	private char maze[][] = {{'X','X','X','X','X','X','X','X','X','X'},
-							  {'X',' ',' ',' ',' ',' ',' ',' ',' ','X'},
-							  {'X',' ','X','X',' ','X',' ','X',' ','X'},
-							  {'X',' ','X','X',' ','X',' ','X',' ','X'},
-							  {'X',' ','X','X',' ','X',' ','X',' ','X'},
-							  {'X',' ',' ',' ',' ',' ',' ','X',' ',' '},
-							  {'X',' ','X','X',' ','X',' ','X',' ','X'},
-							  {'X',' ','X','X',' ','X',' ','X',' ','X'},
-							  {'X',' ','X','X',' ',' ',' ',' ',' ','X'},
-	  						  {'X','X','X','X','X','X','X','X','X','X'}};
+	private char maze[][];
 	
-	public Maze(char[][] maze){
+	public Maze(char[][] maze, int mode){
 		this.maze = maze;
 		
 		for(int i = 0; i < maze.length; i++)
@@ -46,13 +37,6 @@ public class Maze {
 				}
 		
 		status = MazeStatus.HeroUnarmed;
-		mode = Mode.STILL;
-	}
-	public Maze(int mode){
-		hero = new Hero();
-		dragon = new Dragon();
-		sword = new Sword();
-		exit = new Exit();
 		switch(mode){
 		case 1:
 			this.mode = Mode.STILL;
@@ -64,7 +48,6 @@ public class Maze {
 			this.mode = Mode.SLEEP;
 			break;
 		}
-		status = MazeStatus.HeroUnarmed;
 	}
 	
 	public int update(char dir){
@@ -141,7 +124,27 @@ public class Maze {
 		return hero.getPosition();
 	}
 	
+	public Point getDragonPosition(){
+		return dragon.getPosition();
+	}
+	
+	public char getHeroSymbol(){
+		return hero.getSymbol();
+	}
+	
+	public char getDragonSymbol(){
+		return dragon.getSymbol();
+	}
+	
+	public char getSwordSymbol(){
+		return sword.getSymbol();
+	}
+	
 	public MazeStatus getStatus(){
 		return status;
+	}
+	
+	public Dragon.State getDragonStatus(){
+		return dragon.getStatus();
 	}
 }
