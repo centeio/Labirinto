@@ -39,11 +39,13 @@ public class TestMazeWithSleepingDragon {
 		assertEquals(new Point(3,3), maze.getDragonPosition());
 		
 		int i;
-		for (i = 0; i < 20 && Dragon.State.AWAKE != maze.getDragonStatus(); i++) {
-			maze.update('o');
+		for (i = 0; i < 20 && Dragon.State.AWAKE == maze.getDragonStatus(); i++) {
+			maze.update('n');
 		}
 		
-		if(i != 20)
-			assertEquals(true ,Dragon.State.DEAD == maze.getDragonStatus() || Dragon.State.ASLEEP == maze.getDragonStatus());
+		if(i != 20){
+			assertEquals(Dragon.State.ASLEEP, maze.getDragonStatus());
+			assertEquals('d', maze.getDragonSymbol());
+		}
 	}
 }
