@@ -1,20 +1,21 @@
 package maze.logic;
 
 import java.awt.Point;
+import java.util.Vector;
 
 public class Maze {
 	private static final int STAY = 4;
 	private Mode mode;
 	private MazeStatus status;
 	private Hero hero;
-	private Dragon dragon;
+	private Vector<Dragon> dragons = new Vector<Dragon>();;
 	private Sword sword;
 	private Exit exit;
 	private char maze[][];
-	
+
 	public Maze(char[][] maze, int mode){
 		this.maze = maze;
-		
+
 		for(int i = 0; i < maze.length; i++)
 			for(int j = 0; j < (maze[0]).length; j++)
 				switch(maze[i][j]){
@@ -27,7 +28,7 @@ public class Maze {
 					maze[i][j] = ' ';
 					break;
 				case 'D':
-					dragon = new Dragon(j,i);
+					dragons.add(new Dragon(j,i));
 					maze[i][j] = ' ';
 					break;
 				case 'S':
@@ -35,7 +36,7 @@ public class Maze {
 					maze[i][j] = ' ';
 					break;					
 				}
-		
+
 		status = MazeStatus.HeroUnarmed;
 		switch(mode){
 		case 1:
@@ -49,102 +50,122 @@ public class Maze {
 			break;
 		}
 	}
-	
+
 	public int update(char dir){
-		hero.move(dir);
+
 		int dragonDir = STAY;
-		
-		dragonDir = dragon.update(mode);
-		
+
+		//Move hero
+		hero.move(dir);
+
 		//If wall undo move
-		if(maze[dragon.getPosY()][dragon.getPosX()] == 'X')
-			dragon.undoMove(dragonDir);
-		
 		if(maze[hero.getPosY()][hero.getPosX()] == 'X')
 			hero.undoMove(dir);
-		
+
+		//Move every dragon
+		for(int i = 0; i < dragons.size() ; i++){
+			dragonDir = dragons.get(i).update(mode);
+
+			//If wall undo move
+			if(maze[dragons.get(i).getPosY()][dragons.get(i).getPosX()] == 'X')
+				dragons.get(i).undoMove(dragonDir);
+		}
+
 		//Hero got sword
 		if(hero.getPosition().equals(sword.getPosition())){
 			hero.arm();
 			sword.disappear();
 			status = MazeStatus.HeroArmed;
 		}
-		
+
 		//Hero died
-		if(status == MazeStatus.HeroUnarmed
-								&&  hero.getPosY() >= dragon.getPosY() - 1 
-								&&  hero.getPosY() <= dragon.getPosY() + 1 
-								&& hero.getPosX() >= dragon.getPosX()- 1
-								&& hero.getPosX() <= dragon.getPosX()+ 1){
-			status = MazeStatus.HeroDied;
-			return 2;
+		for(int i = 0; i < dragons.size(); i++){
+			if(status == MazeStatus.HeroUnarmed
+					&&  hero.getPosY() >= dragons.get(i).getPosY() - 1 
+					&&  hero.getPosY() <= dragons.get(i).getPosY() + 1 
+					&& hero.getPosX() >= dragons.get(i).getPosX()- 1
+					&& hero.getPosX() <= dragons.get(i).getPosX()+ 1){
+				status = MazeStatus.HeroDied;
+				return 2;
+			}
 		}
+
 		//Hero killed dragon
-		if(status == MazeStatus.HeroArmed &&  hero.getPosition().equals(dragon.getPosition())){
-			dragon.kill();
-			status = MazeStatus.HeroSlayed;
+		int i = 0;
+		while( i < dragons.size()){
+			if((status == MazeStatus.HeroArmed ||  status == MazeStatus.HeroSlayed)&&  hero.getPosition().equals(dragons.get(i).getPosition())){
+				dragons.get(i).kill();
+				dragons.remove(dragons.get(i));
+				status = MazeStatus.HeroSlayed;
+			}
+			else
+				i++;
 		}
-		
-		//Hero kills dragon and leaves
-		if(status == MazeStatus.HeroSlayed && hero.getPosition().equals(exit.getPosition())){
+
+		//Hero kills every dragon and leaves
+		if(dragons.size() == 0 && hero.getPosition().equals(exit.getPosition())){
 			status = MazeStatus.HeroWon;
 			return 1;
 		}
-		
+
 		return 0;
 	}
-	
+
 	public String toString(){
 		char[][] board = new char[maze.length][];
 		String str = new String();
-		
+
 		//Clone maze
 		for(int i = 0; i < maze.length; i++)
 			board[i] = (char[])maze[i].clone();
-		
-		board[dragon.getPosY()][dragon.getPosX()] = dragon.getSymbol();
-		if(dragon.getPosX() == sword.getPosX() & dragon.getPosY() == sword.getPosY())
-			board[sword.getPosY()][sword.getPosX()] = 'F';
-		else
-			board[sword.getPosY()][sword.getPosX()] = sword.getSymbol();
+
+		board[sword.getPosY()][sword.getPosX()] = sword.getSymbol();
+
+		for(int i = 0; i < dragons.size(); i++){
+			board[dragons.get(i).getPosY()][dragons.get(i).getPosX()] = dragons.get(i).getSymbol();
+			if(dragons.get(i).getPosX() == sword.getPosX() & dragons.get(i).getPosY() == sword.getPosY())
+				board[sword.getPosY()][sword.getPosX()] = 'F';
+		}
+
 		board[hero.getPosY()][hero.getPosX()] = hero.getSymbol();
 		board[exit.getPosY()][exit.getPosX()] = exit.getSymbol();
-		
-		
+
+
 		for(char[] line: board){
 			for(char pos: line)
 				str += pos + " ";
 			str += "\n";
 		}
-		
+
 		return str;
 	}
-	
+
 	public Point getHeroPosition(){
 		return hero.getPosition();
 	}
-	
+
 	public Point getDragonPosition(){
-		return dragon.getPosition();
+		return dragons.get(0).getPosition();
 	}
-	
+
 	public char getHeroSymbol(){
 		return hero.getSymbol();
 	}
-	
+
 	public char getDragonSymbol(){
+		Dragon dragon = dragons.get(0);
 		return dragon.getSymbol();
 	}
-	
+
 	public char getSwordSymbol(){
 		return sword.getSymbol();
 	}
-	
+
 	public MazeStatus getStatus(){
 		return status;
 	}
-	
+
 	public Dragon.State getDragonStatus(){
-		return dragon.getStatus();
+		return dragons.get(0).getStatus();
 	}
 }

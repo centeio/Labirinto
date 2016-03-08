@@ -10,7 +10,7 @@ public class TestMazeWithStaticDragon {
 	char [][] m1 = {{'X', 'X', 'X', 'X', 'X'},
 				    {'X', ' ', ' ', 'H', 'S'},
 				    {'X', ' ', 'X', ' ', 'X'},
-				    {'X', 'E', ' ', 'D', 'X'},
+				    {'X', 'E', 'D', 'D', 'X'},
 				    {'X', 'X', 'X', 'X', 'X'}};
 	@Test
 	public void testMoveHeroToFreeCell() {
@@ -62,8 +62,6 @@ public class TestMazeWithStaticDragon {
 		maze.update('e');
 		maze.update('e');
 		assertEquals(MazeStatus.HeroSlayed, maze.getStatus());
-		assertEquals(' ', maze.getDragonSymbol());
-		
 	}
 	
 	@Test
@@ -79,10 +77,10 @@ public class TestMazeWithStaticDragon {
 		maze.update('e');
 		maze.update('e');
 		assertEquals(MazeStatus.HeroSlayed, maze.getStatus());
+
+		maze.update('n');
+		maze.update('n');
 		
-		maze.update('e');
-		maze.update('n');
-		maze.update('n');
 		assertEquals(1,maze.update('e'));
 		assertEquals(MazeStatus.HeroWon, maze.getStatus());
 		
