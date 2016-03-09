@@ -29,17 +29,11 @@ public class MazeBuilder implements IMazeBuilder{
 					randmaze[i][j]=' ';
 			}
 		}
-		for(char[] line: randmaze){
-			for(char pos: line)
-				System.out.print(pos+" ");
-			System.out.println();
-		}
-		System.out.println("------------\n");
-		
+
 		Paths();
-		
+		PlacePieces();
+
 		return randmaze;
-		
 	}
 
 	public MazeBuilder(){
@@ -82,10 +76,36 @@ public class MazeBuilder implements IMazeBuilder{
 	public void change(int x, int y){
 		randmaze[x][y]=' ';
 		cells[(guideX-1)/2][(guideY-1)/2]=1;
-		path.push(guideX);
 		path.push(guideY);
+		path.push(guideX);
 	}
 
+	public void PlacePieces(){
+		Random rand = new Random();
+		int x, y;
+		int heroX, heroY;
+
+		//Place Hero
+		do{
+			heroX = rand.nextInt(length);
+			heroY = rand.nextInt(height);
+		}while(randmaze[heroX][heroY] != ' ');
+		randmaze[heroX][heroY] = 'H';
+
+		//Place Dragon
+		do{
+			x = rand.nextInt(length);
+			y = rand.nextInt(height);
+		}while(randmaze[x][y] != ' ' || (x >= heroX-1 && x <= heroX+1) || (y >= heroY-1 && y <= heroY+1));
+		randmaze[x][y] = 'D';
+
+		//Place Sword
+		do{
+			x = rand.nextInt(length);
+			y = rand.nextInt(height);
+		}while(randmaze[x][y] != ' ');
+		randmaze[x][y] = 'E';
+	}
 
 	public void Paths(){
 
@@ -114,12 +134,12 @@ public class MazeBuilder implements IMazeBuilder{
 			randmaze[x][height-1]='S';
 			break;
 		}
-		
+
 		cells[(x-1)/2][(y-1)/2]=1;
 
 		path.push(y);
 		path.push(x);
-		
+
 		guideX = x;
 		guideY = y;
 
@@ -128,19 +148,7 @@ public class MazeBuilder implements IMazeBuilder{
 			int dir = direction(guideX, guideY);
 
 			if(dir!=-1){
-				for(char[] line: randmaze){
-					for(char pos: line)
-						System.out.print(pos);
-					System.out.println();
-				}
-				System.out.println();
-				
-				for(int[] line: cells){
-					for(int pos: line)
-						System.out.print(pos);
-					System.out.println();
-					System.out.println();
-				}
+
 				switch(dir){
 				case 0:
 					x=guideX-1;
@@ -168,24 +176,10 @@ public class MazeBuilder implements IMazeBuilder{
 				guideX = path.pop();
 				guideY = path.pop();
 			}
-			
+
 			x=guideX;
 			y=guideY;
-		}while(!path.isEmpty());
-
-
-		for(char[] line: randmaze){
-			for(char pos: line)
-				System.out.print(pos);
-			System.out.println();
-		}
-		
-		for(int[] line: cells){
-			for(int pos: line)
-				System.out.print(pos);
-			System.out.println();
-		}
-		
+		}while(!path.isEmpty());		
 	}
 }
 
