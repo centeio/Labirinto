@@ -143,6 +143,8 @@ public class TestMazeBuilder {
 			assertNotNull("Missing dragon in maze:\n" + m, findPos(m, 'D'));
 			assertNotNull("Missing sward in maze:\n" + m, findPos(m, 'E'));
 			assertFalse("Adjacent hero and dragon in maze:\n" + str(m), findPos(m, 'H').adjacentTo(findPos(m, 'D')));
+			
+			System.out.println(str(m) + "\n");
 		}	
 	}
 	

@@ -12,7 +12,12 @@ public class MazeBuilder implements IMazeBuilder{
 	private int guideY;
 	public Stack<Integer> path= new Stack<Integer>();
 
-	public char[][] buildMaze(int size){
+	public MazeBuilder(){}
+
+	public char[][] buildMaze(int size, int numDragons) throws IllegalArgumentException{
+		if(size%2 == 0)
+			throw new IllegalArgumentException();
+
 		height=size;
 		length=size;
 		randmaze = new char[height][length];
@@ -31,12 +36,13 @@ public class MazeBuilder implements IMazeBuilder{
 		}
 
 		Paths();
-		PlacePieces();
+		PlacePieces(numDragons);
 
 		return randmaze;
 	}
 
-	public MazeBuilder(){
+	public char[][] buildMaze(int size) throws IllegalArgumentException{
+		return buildMaze(size,1);
 	}
 
 	public int direction(int x, int y){
@@ -80,7 +86,7 @@ public class MazeBuilder implements IMazeBuilder{
 		path.push(guideX);
 	}
 
-	public void PlacePieces(){
+	public void PlacePieces(int numDragons){
 		Random rand = new Random();
 		int x, y;
 		int heroX, heroY;
@@ -92,12 +98,14 @@ public class MazeBuilder implements IMazeBuilder{
 		}while(randmaze[heroX][heroY] != ' ');
 		randmaze[heroX][heroY] = 'H';
 
-		//Place Dragon
-		do{
-			x = rand.nextInt(length);
-			y = rand.nextInt(height);
-		}while(randmaze[x][y] != ' ' || (x >= heroX-1 && x <= heroX+1) || (y >= heroY-1 && y <= heroY+1));
-		randmaze[x][y] = 'D';
+		//Place Dragons
+		for(int i = 0; i < numDragons; i++){
+			do{
+				x = rand.nextInt(length);
+				y = rand.nextInt(height);
+			}while(randmaze[x][y] != ' ' || (x >= heroX-1 && x <= heroX+1) || (y >= heroY-1 && y <= heroY+1));
+			randmaze[x][y] = 'D';
+		}
 
 		//Place Sword
 		do{

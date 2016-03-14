@@ -1,14 +1,17 @@
 package maze.cli;
 import java.util.Scanner;
 
-import maze.logic.Maze;
+import maze.logic.*;
 
 public class Game {
 
 	public static void main(String[] args) {
 		int mode;
 		int gameState = 0;
-		char[][] board = {{'X','X','X','X','X','X','X','X','X','X'},
+		int size;
+		int numDragons;
+		MazeBuilder builder = new MazeBuilder();
+		/*char[][] board = {{'X','X','X','X','X','X','X','X','X','X'},
 						  {'X','H',' ',' ',' ',' ',' ',' ',' ','X'},
 						  {'X',' ','X','X',' ','X',' ','X',' ','X'},
 						  {'X','D','X','X',' ','X',' ','X',' ','X'},
@@ -17,9 +20,15 @@ public class Game {
 						  {'X',' ','X','X',' ','X',' ','X',' ','X'},
 						  {'X',' ','X','X',' ','X',' ','X',' ','X'},
 						  {'X','E','X','X',' ',' ',' ',' ',' ','X'},
-						  {'X','X','X','X','X','X','X','X','X','X'}};
+						  {'X','X','X','X','X','X','X','X','X','X'}};*/
 		
 		Scanner s = new Scanner(System.in);
+		
+		System.out.println("Insira o tamanho do labirinto: ");
+		size = s.nextInt();
+		
+		System.out.println("Insira o numero de dragoes: ");
+		numDragons = s.nextInt();
 		
 		System.out.println("Por favor insira o numero do modo:"
 				+"\n\t1.Sem movimento"
@@ -27,7 +36,7 @@ public class Game {
 				+"\n\t3.Com adormecimento");
 		mode = s.nextInt();
 		
-		Maze maze = new Maze(board, mode);
+		Maze maze = new Maze(builder.buildMaze(size,numDragons), mode);
 		
 		System.out.println(maze);
 		
