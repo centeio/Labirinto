@@ -1,6 +1,8 @@
 package maze.gui;
 
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -16,11 +18,14 @@ public class MazePanel extends JPanel {
 	private BufferedImage armed;
 	private char[][] maze = null;
 	private int width=40, height=40;
+	
+	private Window win;
 
 	/**
 	 * Create the panel.
 	 */
-	public MazePanel() {
+	public MazePanel(Window win) {
+		this.win = win;
 		try {
 			hero =  ImageIO.read(new File("hero.png"));
 			dragon = ImageIO.read(new File("dragon.png"));
@@ -30,6 +35,38 @@ public class MazePanel extends JPanel {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		addKeyListener(new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				switch(e.getKeyCode()){
+				case KeyEvent.VK_LEFT: 
+					win.update('o');
+					break;
+
+				case KeyEvent.VK_RIGHT: 
+					win.update('e');
+					break;
+
+				case KeyEvent.VK_UP: 
+					win.update('n');
+					break;
+
+				case KeyEvent.VK_DOWN: 
+					win.update('s');
+					break;
+				}
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+			}			
+		});
 	}
 
 	public void setMaze(char[][] maze){
@@ -66,6 +103,7 @@ public class MazePanel extends JPanel {
 					}
 
 				}
+			this.requestFocus();
 		}
 
 	}

@@ -14,6 +14,8 @@ import javax.swing.JButton;
 import javax.swing.JTextArea;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.ActionEvent;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
@@ -31,19 +33,23 @@ public class Window {
 	private JButton btnSul;
 	MazePanel mazePanel;
 
-	private void updateTxtStatus(int status){
+	public void update(char dir){
 		
+		int status = maze.update(dir);
+
 		mazePanel.setMaze(maze.getMaze());
 		if(status != 0){
 			if(status == 1)
 				txtStatus.setText("Parabens!!!!");
 			if(status == 2)
 				txtStatus.setText("Game Over...");
-			
+
 			btnNorte.setEnabled(false);
 			btnOeste.setEnabled(false);
 			btnEste.setEnabled(false);	
 			btnSul.setEnabled(false);
+			
+			mazePanel.setEnabled(false);
 		}
 	}
 
@@ -69,7 +75,7 @@ public class Window {
 	public Window() {
 		initialize();
 	}
-	
+
 	public void testArg(int mazeSize){
 		if (mazeSize%2!=1)
 			throw new IllegalArgumentException();
@@ -87,7 +93,7 @@ public class Window {
 		btnNorte = new JButton("Norte");
 		btnNorte.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				updateTxtStatus( maze.update('n'));	
+				update('n');	
 			}
 		});
 		btnNorte.setEnabled(false);
@@ -97,7 +103,7 @@ public class Window {
 		btnOeste = new JButton("Oeste");
 		btnOeste.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				updateTxtStatus( maze.update('o'));
+				update('o');
 			}
 		});
 		btnOeste.setEnabled(false);
@@ -107,7 +113,7 @@ public class Window {
 		btnEste = new JButton("Este");
 		btnEste.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				updateTxtStatus( maze.update('e'));
+				update('e');
 			}
 		});
 		btnEste.setEnabled(false);
@@ -117,7 +123,7 @@ public class Window {
 		btnSul = new JButton("Sul");
 		btnSul.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				updateTxtStatus( maze.update('s'));
+				update('s');
 			}
 		});
 		btnSul.setEnabled(false);
@@ -168,7 +174,7 @@ public class Window {
 					JOptionPane.showMessageDialog(frame,"Formato não válido");
 					return;
 				}
-				
+
 				try{
 					testArg(mazeSize);
 				}catch(IllegalArgumentException answer){
@@ -184,13 +190,14 @@ public class Window {
 					maze = new Maze(builder.buildMaze(mazeSize,numDragons), 2);
 				else
 					maze = new Maze(builder.buildMaze(mazeSize,numDragons), 3);
-				
+
 				mazePanel.setMaze(maze.getMaze());
 
 				btnNorte.setEnabled(true);
 				btnOeste.setEnabled(true);
 				btnEste.setEnabled(true);	
 				btnSul.setEnabled(true);
+				mazePanel.setEnabled(true);
 
 				mazePanel.setMaze(maze.getMaze());
 				txtStatus.setText("Pode jogar!!!!");
@@ -214,10 +221,12 @@ public class Window {
 		txtStatus.setBounds(10, 449, 446, 20);
 		frame.getContentPane().add(txtStatus);
 		txtStatus.setColumns(10);
-		
-		mazePanel = new MazePanel();
-		mazePanel.setBorder(new LineBorder(new Color(0, 0, 0)));
+
+		mazePanel = new MazePanel(this);
+		mazePanel.setBackground(Color.WHITE);
 		mazePanel.setBounds(10, 92, 312, 346);
 		frame.getContentPane().add(mazePanel);
+		
+		mazePanel.requestFocus();
 	}
 }
