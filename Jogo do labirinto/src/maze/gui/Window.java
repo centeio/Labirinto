@@ -15,6 +15,8 @@ import javax.swing.JTextArea;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
 
 public class Window {
 
@@ -27,11 +29,11 @@ public class Window {
 	private JButton btnOeste;
 	private	JButton btnEste;
 	private JButton btnSul;
-	JTextArea mazeArea;
+	MazePanel mazePanel;
 
 	private void updateTxtStatus(int status){
 		
-		mazeArea.setText(maze.toString());
+		mazePanel.setMaze(maze.getMaze());
 		if(status != 0){
 			if(status == 1)
 				txtStatus.setText("Parabens!!!!");
@@ -78,7 +80,7 @@ public class Window {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 561, 361);
+		frame.setBounds(100, 100, 561, 530);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
@@ -121,12 +123,6 @@ public class Window {
 		btnSul.setEnabled(false);
 		btnSul.setBounds(396, 198, 89, 23);
 		frame.getContentPane().add(btnSul);
-
-		mazeArea = new JTextArea();
-		mazeArea.setFont(new Font("Courier New", Font.PLAIN, 13));
-		mazeArea.setEditable(false);
-		mazeArea.setBounds(10, 92, 312, 186);
-		frame.getContentPane().add(mazeArea);
 
 		JLabel lblDimension = new JLabel("Dimens\u00E3o do labirinto");
 		lblDimension.setBounds(10, 11, 142, 14);
@@ -188,13 +184,15 @@ public class Window {
 					maze = new Maze(builder.buildMaze(mazeSize,numDragons), 2);
 				else
 					maze = new Maze(builder.buildMaze(mazeSize,numDragons), 3);
+				
+				mazePanel.setMaze(maze.getMaze());
 
 				btnNorte.setEnabled(true);
 				btnOeste.setEnabled(true);
 				btnEste.setEnabled(true);	
 				btnSul.setEnabled(true);
 
-				mazeArea.setText(maze.toString());
+				mazePanel.setMaze(maze.getMaze());
 				txtStatus.setText("Pode jogar!!!!");
 			}
 		});
@@ -213,8 +211,13 @@ public class Window {
 		txtStatus = new JTextField();
 		txtStatus.setEditable(false);
 		txtStatus.setText("Pode gerar novo labirinto!");
-		txtStatus.setBounds(10, 289, 446, 20);
+		txtStatus.setBounds(10, 449, 446, 20);
 		frame.getContentPane().add(txtStatus);
 		txtStatus.setColumns(10);
+		
+		mazePanel = new MazePanel();
+		mazePanel.setBorder(new LineBorder(new Color(0, 0, 0)));
+		mazePanel.setBounds(10, 92, 312, 346);
+		frame.getContentPane().add(mazePanel);
 	}
 }

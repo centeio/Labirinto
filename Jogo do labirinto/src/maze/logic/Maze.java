@@ -52,7 +52,7 @@ public class Maze {
 	}
 
 	public int update(char dir){
-
+		
 		int dragonDir = STAY;
 
 		//Move hero
@@ -112,24 +112,9 @@ public class Maze {
 	}
 
 	public String toString(){
-		char[][] board = new char[maze.length][];
+		
+		char[][] board = getMaze();
 		String str = new String();
-
-		//Clone maze
-		for(int i = 0; i < maze.length; i++)
-			board[i] = (char[])maze[i].clone();
-
-		board[sword.getPosY()][sword.getPosX()] = sword.getSymbol();
-
-		for(int i = 0; i < dragons.size(); i++){
-			board[dragons.get(i).getPosY()][dragons.get(i).getPosX()] = dragons.get(i).getSymbol();
-			if(dragons.get(i).getPosX() == sword.getPosX() & dragons.get(i).getPosY() == sword.getPosY())
-				board[sword.getPosY()][sword.getPosX()] = 'F';
-		}
-
-		board[hero.getPosY()][hero.getPosX()] = hero.getSymbol();
-		board[exit.getPosY()][exit.getPosX()] = exit.getSymbol();
-
 
 		for(char[] line: board){
 			for(char pos: line)
@@ -167,5 +152,26 @@ public class Maze {
 
 	public Dragon.State getDragonStatus(){
 		return dragons.get(0).getStatus();
+	}
+	
+	public char[][] getMaze(){
+		char[][] board = new char[maze.length][];
+		
+		//Clone maze
+		for(int i = 0; i < maze.length; i++)
+			board[i] = (char[])maze[i].clone();
+
+		board[sword.getPosY()][sword.getPosX()] = sword.getSymbol();
+
+		for(int i = 0; i < dragons.size(); i++){
+			board[dragons.get(i).getPosY()][dragons.get(i).getPosX()] = dragons.get(i).getSymbol();
+			if(dragons.get(i).getPosX() == sword.getPosX() & dragons.get(i).getPosY() == sword.getPosY())
+				board[sword.getPosY()][sword.getPosX()] = 'F';
+		}
+
+		board[exit.getPosY()][exit.getPosX()] = exit.getSymbol();
+		board[hero.getPosY()][hero.getPosX()] = hero.getSymbol();
+		
+		return board;
 	}
 }
