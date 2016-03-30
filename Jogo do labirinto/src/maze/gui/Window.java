@@ -67,6 +67,11 @@ public class Window {
 	public Window() {
 		initialize();
 	}
+	
+	public void testArg(int mazeSize){
+		if (mazeSize%2!=1)
+			throw new IllegalArgumentException();
+	}
 
 	/**
 	 * Initialize the contents of the frame.
@@ -167,6 +172,14 @@ public class Window {
 					JOptionPane.showMessageDialog(frame,"Formato não válido");
 					return;
 				}
+				
+				try{
+					testArg(mazeSize);
+				}catch(IllegalArgumentException answer){
+					JOptionPane.showMessageDialog(frame,"Inserir número ímpar");
+					return;
+				}
+
 
 				String s = (String) comboBox.getSelectedItem();
 				if(s.equals("Estáticos"))
