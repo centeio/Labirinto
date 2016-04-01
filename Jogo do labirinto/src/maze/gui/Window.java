@@ -192,6 +192,7 @@ public class Window {
 					maze = new Maze(builder.buildMaze(mazeSize,numDragons), 3);
 
 				mazePanel.setMaze(maze.getMaze());
+				mazePanel.setSize(maze.getMaze().length*40, maze.getMaze().length*40);
 
 				btnNorte.setEnabled(true);
 				btnOeste.setEnabled(true);
@@ -201,6 +202,8 @@ public class Window {
 
 				mazePanel.setMaze(maze.getMaze());
 				txtStatus.setText("Pode jogar!!!!");
+				
+				
 			}
 		});
 		btnGerarNovoLabirinto.setBounds(333, 7, 134, 34);
