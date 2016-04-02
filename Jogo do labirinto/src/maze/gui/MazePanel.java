@@ -17,6 +17,7 @@ public class MazePanel extends JPanel {
 	private BufferedImage brick;
 	private BufferedImage armed;
 	private BufferedImage exit;
+	private BufferedImage sleep;
 	private char[][] maze = null;
 	private int width=40, height=40;
 	
@@ -34,6 +35,7 @@ public class MazePanel extends JPanel {
 			brick = ImageIO.read(new File("brick.png"));
 			armed = ImageIO.read(new File("armed.png"));
 			exit = ImageIO.read(new File("closed_door.png"));
+			sleep = ImageIO.read(new File("sleep.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -105,6 +107,9 @@ public class MazePanel extends JPanel {
 						break;
 					case 'S':
 						g.drawImage(exit, x, y, x + width - 1, y + height - 1, 0, 0, exit.getWidth(), exit.getHeight(), null);
+						break;
+					case 'd':
+						g.drawImage(sleep, x, y, x + width - 1, y + height - 1, 0, 0, sleep.getWidth(), sleep.getHeight(), null);
 						break;
 					}
 
