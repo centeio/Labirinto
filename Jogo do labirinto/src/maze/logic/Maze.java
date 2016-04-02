@@ -80,11 +80,11 @@ public class Maze {
 
 		//Hero died
 		for(int i = 0; i < dragons.size(); i++){
-			if(status == MazeStatus.HeroUnarmed
-					&&  hero.getPosY() >= dragons.get(i).getPosY() - 1 
-					&&  hero.getPosY() <= dragons.get(i).getPosY() + 1 
-					&& hero.getPosX() >= dragons.get(i).getPosX()- 1
-					&& hero.getPosX() <= dragons.get(i).getPosX()+ 1){
+			if(status == MazeStatus.HeroUnarmed	&& ( 
+						(hero.getPosY() == dragons.get(i).getPosY() - 1 && hero.getPosX() == dragons.get(i).getPosX())
+					||  (hero.getPosY() == dragons.get(i).getPosY() + 1 && hero.getPosX() == dragons.get(i).getPosX())
+					||	(hero.getPosX() == dragons.get(i).getPosX() - 1 && hero.getPosY() == dragons.get(i).getPosY())
+					||	(hero.getPosX() == dragons.get(i).getPosX() + 1 && hero.getPosY() == dragons.get(i).getPosY()))){
 				status = MazeStatus.HeroDied;
 				return 2;
 			}
