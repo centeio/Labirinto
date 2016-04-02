@@ -65,9 +65,17 @@ public class Maze {
 		//Move every dragon
 		for(int i = 0; i < dragons.size() ; i++){
 			dragonDir = dragons.get(i).update(mode);
+			boolean dragonThere = false;
 
-			//If wall undo move
-			if(dragons.get(i).getPosY() < 0 || dragons.get(i).getPosX() < 0 || dragons.get(i).getPosY() >= maze.length|| dragons.get(i).getPosX() >= maze.length || maze[dragons.get(i).getPosY()][dragons.get(i).getPosX()] == 'X')
+			//If wall or other dragon undo move
+			for(int j = 0; j < dragons.size() ; j++)
+				if(i != j && dragons.get(j).getPosX() == dragons.get(i).getPosX() && dragons.get(j).getPosY() == dragons.get(i).getPosY()){
+					dragonThere = true;
+				}
+			
+			if(dragons.get(i).getPosY() < 0 || dragons.get(i).getPosX() < 0 || 
+					dragons.get(i).getPosY() >= maze.length|| dragons.get(i).getPosX() >= maze.length ||
+					maze[dragons.get(i).getPosY()][dragons.get(i).getPosX()] == 'X' || dragonThere)
 				dragons.get(i).undoMove(dragonDir);
 		}
 

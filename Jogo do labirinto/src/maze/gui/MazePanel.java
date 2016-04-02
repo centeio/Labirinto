@@ -97,6 +97,7 @@ public class MazePanel extends JPanel {
 						g.drawImage(armed, x, y, x + width - 1, y + height - 1, 0, 0, armed.getWidth(), armed.getHeight(), null);
 						break;
 					case 'D':
+					case 'F':
 						g.drawImage(dragon, x, y, x + width - 1, y + height - 1, 0, 0, dragon.getWidth(), dragon.getHeight(), null);
 						break;
 					case 'E':
