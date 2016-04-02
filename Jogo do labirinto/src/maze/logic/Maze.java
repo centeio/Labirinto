@@ -59,7 +59,7 @@ public class Maze {
 		hero.move(dir);
 
 		//If wall undo move
-		if(maze[hero.getPosY()][hero.getPosX()] == 'X')
+		if(hero.getPosY() < 0 || hero.getPosX() < 0 || hero.getPosY() >= maze.length|| hero.getPosX() >= maze.length || maze[hero.getPosY()][hero.getPosX()] == 'X')
 			hero.undoMove(dir);
 
 		//Move every dragon
@@ -67,7 +67,7 @@ public class Maze {
 			dragonDir = dragons.get(i).update(mode);
 
 			//If wall undo move
-			if(maze[dragons.get(i).getPosY()][dragons.get(i).getPosX()] == 'X')
+			if(dragons.get(i).getPosY() < 0 || dragons.get(i).getPosX() < 0 || dragons.get(i).getPosY() >= maze.length|| dragons.get(i).getPosX() >= maze.length || maze[dragons.get(i).getPosY()][dragons.get(i).getPosX()] == 'X')
 				dragons.get(i).undoMove(dragonDir);
 		}
 

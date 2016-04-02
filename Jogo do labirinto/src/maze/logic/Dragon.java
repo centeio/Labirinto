@@ -37,8 +37,8 @@ public class Dragon extends Piece{
 		Random r = new Random();
 		boolean change = r.nextBoolean();
 
-		if(state != State.DEAD & mode != Mode.STILL){
-			if(change & mode == Mode.SLEEP){
+		if(state != State.DEAD && mode != Mode.STILL){
+			if(change && mode == Mode.SLEEP){
 				if(state == State.ASLEEP)
 					wakeUp();
 				else
