@@ -4,13 +4,13 @@ import java.util.Stack;
 
 
 public class MazeBuilder implements IMazeBuilder{
-	public char[][] randmaze;
+	private char[][] randmaze;
 	private int[][] cells;
-	public int height;
-	public int length;
+	private int height;
+	private int length;
 	private int guideX;
 	private int guideY;
-	public Stack<Integer> path= new Stack<Integer>();
+	private Stack<Integer> path= new Stack<Integer>();
 
 	public MazeBuilder(){}
 
