@@ -3,16 +3,41 @@ package maze.logic;
 import java.awt.Point;
 import java.util.Vector;
 
+/**
+ * The Class Maze.
+ */
 public class Maze {
+	
+	/** The Constant STAY. */
 	private static final int STAY = 4;
+	
+	/** The mode. */
 	private Mode mode;
+	
+	/** The status. */
 	private MazeStatus status;
+	
+	/** The hero. */
 	private Hero hero;
+	
+	/** The dragons. */
 	private Vector<Dragon> dragons = new Vector<Dragon>();;
+	
+	/** The sword. */
 	private Sword sword;
+	
+	/** The exit. */
 	private Exit exit;
+	
+	/** The maze. */
 	private char maze[][];
 
+	/**
+	 * Instantiates a new maze.
+	 *
+	 * @param maze matrix of char representing the maze
+	 * @param mode number of mode 1:STILL 2:MOVE 3:SLEEP
+	 */
 	public Maze(char[][] maze, int mode){
 		this.maze = maze;
 
@@ -51,6 +76,12 @@ public class Maze {
 		}
 	}
 
+	/**
+	 * Updates the game moving the hero in the direction he/she chose, changing the status and moving the dragon if necessary.
+	 *
+	 * @param dir represents the direction taken by the hero north(N or n), south(S or s), east (E or e) or west(o or o)
+	 * @return the status of the game 0 if still running, 1 if hero left the maze and 2 if dragon kills the hero
+	 */
 	public int update(char dir){
 		
 		int dragonDir = STAY;
@@ -119,6 +150,11 @@ public class Maze {
 		return 0;
 	}
 
+	/* Turns matrix of chars containing maze with pieces in their respective places (game board) into a string
+	 * 
+	 * @see java.lang.Object#toString()
+	 * @returns string representation of game board
+	 */
 	public String toString(){
 		
 		char[][] board = getMaze();
@@ -133,39 +169,85 @@ public class Maze {
 		return str;
 	}
 
+	/**
+	 * Gets the hero's position.
+	 *
+	 * @return position of the hero
+	 */
 	public Point getHeroPosition(){
 		return hero.getPosition();
 	}
 
+	/**
+	 * Gets the first dragon's position.
+	 *
+	 * @return the position of the first dragon in dragons vector
+	 */
 	public Point getDragonPosition(){
 		return dragons.get(0).getPosition();
 	}
 
+	/**
+	 * The symbolic representation of the hero.
+	 *
+	 * @return char symbolizing the hero
+	 */
 	public char getHeroSymbol(){
 		return hero.getSymbol();
 	}
 	
+	/**
+	 * Gets the number dragons to kill.
+	 *
+	 * @return number dragons left to kill
+	 */
 	public int getNumDragonsToKill(){
 		return dragons.size();
 	}
 
+	/**
+	 * The symbolic representation of the first dragon.
+	 *
+	 * @return char symbolizing the first dragon
+	 */
 	public char getDragonSymbol(){
 		Dragon dragon = dragons.get(0);
 		return dragon.getSymbol();
 	}
 
+	/**
+	 * The symbolic representation of the sword.
+	 *
+	 * @return char symbolizing the sword
+	 */
+	 */
 	public char getSwordSymbol(){
 		return sword.getSymbol();
 	}
 
+	/**
+	 * Gets the status of the maze.
+	 *
+	 * @return maze's status
+	 */
 	public MazeStatus getStatus(){
 		return status;
 	}
 
+	/**
+	 * Gets the status of the first dragon.
+	 *
+	 * @return the first dragon's status
+	 */
 	public Dragon.State getDragonStatus(){
 		return dragons.get(0).getStatus();
 	}
 	
+	/**
+	 * Gets the maze with all the pieces in their respective place.
+	 *
+	 * @return the game board
+	 */
 	public char[][] getMaze(){
 		char[][] board = new char[maze.length][];
 		
@@ -177,6 +259,7 @@ public class Maze {
 
 		for(int i = 0; i < dragons.size(); i++){
 			board[dragons.get(i).getPosY()][dragons.get(i).getPosX()] = dragons.get(i).getSymbol();
+			
 			if(dragons.get(i).getPosX() == sword.getPosX() & dragons.get(i).getPosY() == sword.getPosY())
 				board[sword.getPosY()][sword.getPosX()] = 'F';
 		}
