@@ -198,7 +198,7 @@ public class Window {
 			}
 		});
 		DimSlider.setValue(3);
-		DimSlider.setMinimum(5);
+		DimSlider.setMinimum(3);
 		DimSlider.setMaximum(13);
 		DimSlider.setBounds(142, 10, 122, 20);
 		frame.getContentPane().add(DimSlider);
