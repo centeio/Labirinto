@@ -220,6 +220,15 @@ public class Window {
 					return;
 				}
 				
+				mode = (String) comboBox.getSelectedItem();
+				
+				if(mode.equals("Estáticos"))
+					maze = new Maze(builder.buildMaze(mazeSize,numDragons), 1);
+				else if ( mode.equals("Dinamicos"))
+					maze = new Maze(builder.buildMaze(mazeSize,numDragons), 2);
+				else
+					maze = new Maze(builder.buildMaze(mazeSize,numDragons), 3);
+
 				
 				mazePanel.setMaze(maze.getMaze());
 				mazePanel.setSize(maze.getMaze().length*40, maze.getMaze().length*40);
