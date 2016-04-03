@@ -3,6 +3,11 @@ import java.util.Random;
 import java.util.Stack;
 
 
+/**
+ * MazeBuilder Class
+ *
+ */
+
 public class MazeBuilder implements IMazeBuilder{
 	private char[][] randmaze;
 	private int[][] cells;
@@ -14,6 +19,12 @@ public class MazeBuilder implements IMazeBuilder{
 
 	public MazeBuilder(){}
 
+	/**
+	 * @param size
+	 * @param numDragons number of dragons expected in this maze
+	 * @return random maze
+	 * @throws IllegalArgumentException
+	 */
 	public char[][] buildMaze(int size, int numDragons) throws IllegalArgumentException{
 		if(size%2 == 0)
 			throw new IllegalArgumentException();
@@ -41,10 +52,18 @@ public class MazeBuilder implements IMazeBuilder{
 		return randmaze;
 	}
 
+	/* (non-Javadoc)
+	 * @see maze.logic.IMazeBuilder#buildMaze(int)
+	 */
 	public char[][] buildMaze(int size) throws IllegalArgumentException{
 		return buildMaze(size,1);
 	}
 
+	/**
+	 * @param x 
+	 * @param y
+	 * @return d new direction possible to destroy a wall and build path in the maze
+	 */
 	public int direction(int x, int y){
 		Random rand = new Random();
 		int d=rand.nextInt(4), xcell=(x-1)/2, ycell=(y-1)/2;
@@ -79,6 +98,13 @@ public class MazeBuilder implements IMazeBuilder{
 		return -1;
 	}
 
+	/**
+	 * Saves the visited position (in case we need to undo the path) 
+	 * in path in the maze and removes a wall int the position given
+	 * 
+	 * @param x horizontal position of the wall
+	 * @param y vertical position of the wall
+	 */
 	public void change(int x, int y){
 		randmaze[x][y]=' ';
 		cells[(guideX-1)/2][(guideY-1)/2]=1;
@@ -86,6 +112,11 @@ public class MazeBuilder implements IMazeBuilder{
 		path.push(guideX);
 	}
 
+	/**
+	 * Chooses places randomly and places the pieces in the maze
+	 * 
+	 * @param numDragons number of dragons expected in the maze
+	 */
 	public void PlacePieces(int numDragons){
 		Random rand = new Random();
 		int x, y;
@@ -115,6 +146,9 @@ public class MazeBuilder implements IMazeBuilder{
 		randmaze[x][y] = 'E';
 	}
 
+	/**
+	 * After placing an exit, builds the possible paths in the maze randomly
+	 */
 	public void Paths(){
 
 		Random rand = new Random();
