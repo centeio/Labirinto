@@ -119,9 +119,14 @@ public class Window {
 	public Window() {
 		initialize();
 	}
+	
+	public void testNumDragons(int mazeSize, int numDragons){
+		if (numDragons <= 0 || numDragons > ((mazeSize -2)*(mazeSize -2)) - 2*((mazeSize -2)/2 * (mazeSize -2)/2) -6)
+			throw new IllegalArgumentException();
+	}
 
-	public void testArg(int mazeSize){
-		if (mazeSize%2!=1)
+	public void testMazeSize(int mazeSize){
+		if (mazeSize > 3 && mazeSize%2!=1)
 			throw new IllegalArgumentException();
 	}
 
@@ -135,7 +140,7 @@ public class Window {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
-		btnNorte = new JButton("^");
+		btnNorte = new JButton("\u2191");
 		btnNorte.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				update('n');	
@@ -145,7 +150,7 @@ public class Window {
 		btnNorte.setBounds(211, 92, 50, 26);
 		frame.getContentPane().add(btnNorte);
 
-		btnOeste = new JButton("<");
+		btnOeste = new JButton("\u2190");
 		btnOeste.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				update('o');
@@ -155,7 +160,7 @@ public class Window {
 		btnOeste.setBounds(162, 118, 50, 26);
 		frame.getContentPane().add(btnOeste);
 
-		btnEste = new JButton(">");
+		btnEste = new JButton("\u2192");
 		btnEste.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				update('e');
@@ -165,7 +170,7 @@ public class Window {
 		btnEste.setBounds(259, 118, 50, 26);
 		frame.getContentPane().add(btnEste);
 
-		btnSul = new JButton("v");
+		btnSul = new JButton("\u2193");
 		btnSul.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				update('s');
@@ -197,8 +202,8 @@ public class Window {
 				dim.setText(s);
 			}
 		});
-		DimSlider.setValue(3);
-		DimSlider.setMinimum(3);
+		DimSlider.setValue(5);
+		DimSlider.setMinimum(5);
 		DimSlider.setMaximum(13);
 		DimSlider.setBounds(142, 10, 122, 20);
 		frame.getContentPane().add(DimSlider);
@@ -208,7 +213,7 @@ public class Window {
 		frame.getContentPane().add(lblNmeroDeDrages);
 
 		DragonsField = new JTextField();
-		DragonsField.setBounds(142, 35, 20, 20);
+		DragonsField.setBounds(142, 35, 119, 20);
 		frame.getContentPane().add(DragonsField);
 		DragonsField.setColumns(10);
 
@@ -240,9 +245,16 @@ public class Window {
 				}
 
 				try{
-					testArg(mazeSize);
+					testMazeSize(mazeSize);
 				}catch(IllegalArgumentException answer){
 					JOptionPane.showMessageDialog(frame,"Inserir número ímpar");
+					return;
+				}
+				
+				try{
+					testNumDragons(mazeSize, numDragons);
+				}catch(IllegalArgumentException answer){
+					JOptionPane.showMessageDialog(frame,"Demasiados dragões");
 					return;
 				}
 
@@ -297,7 +309,7 @@ public class Window {
 				}
 
 				try{
-					testArg(mazeSize);
+					testMazeSize(mazeSize);
 				}catch(IllegalArgumentException answer){
 					JOptionPane.showMessageDialog(frame,"Inserir número ímpar");
 					return;
