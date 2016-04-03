@@ -24,6 +24,8 @@ import javax.swing.JSlider;
 import javax.swing.JScrollBar;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
+import javax.swing.DropMode;
+import javax.swing.SwingConstants;
 
 public class Window {
 
@@ -46,9 +48,9 @@ public class Window {
 		mazePanel.setMaze(maze.getMaze());
 		if(status != 0){
 			if(status == 1)
-				txtStatus.setText("Parabens!!!!");
+				JOptionPane.showMessageDialog(frame,"Ganhou!");
 			if(status == 2)
-				txtStatus.setText("Game Over...");
+				JOptionPane.showMessageDialog(frame,"Perdeu...");
 
 			btnNorte.setEnabled(false);
 			btnOeste.setEnabled(false);
@@ -129,7 +131,7 @@ public class Window {
 	private void initialize() {
 		Window win = this;
 		frame = new JFrame();
-		frame.setBounds(100, 100, 647, 600);
+		frame.setBounds(100, 100, 487, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
@@ -140,7 +142,7 @@ public class Window {
 			}
 		});
 		btnNorte.setEnabled(false);
-		btnNorte.setBounds(254, 89, 50, 26);
+		btnNorte.setBounds(211, 92, 50, 26);
 		frame.getContentPane().add(btnNorte);
 
 		btnOeste = new JButton("<");
@@ -150,7 +152,7 @@ public class Window {
 			}
 		});
 		btnOeste.setEnabled(false);
-		btnOeste.setBounds(201, 118, 50, 26);
+		btnOeste.setBounds(162, 118, 50, 26);
 		frame.getContentPane().add(btnOeste);
 
 		btnEste = new JButton(">");
@@ -160,7 +162,7 @@ public class Window {
 			}
 		});
 		btnEste.setEnabled(false);
-		btnEste.setBounds(306, 118, 50, 26);
+		btnEste.setBounds(259, 118, 50, 26);
 		frame.getContentPane().add(btnEste);
 
 		btnSul = new JButton("v");
@@ -170,11 +172,11 @@ public class Window {
 			}
 		});
 		btnSul.setEnabled(false);
-		btnSul.setBounds(254, 118, 50, 26);
+		btnSul.setBounds(211, 118, 50, 26);
 		frame.getContentPane().add(btnSul);
 
 		JLabel lblDimension = new JLabel("Dimens\u00E3o do labirinto");
-		lblDimension.setBounds(10, 11, 162, 14);
+		lblDimension.setBounds(10, 10, 162, 20);
 		frame.getContentPane().add(lblDimension);
 		
 		JLabel dim = new JLabel("");
@@ -196,22 +198,22 @@ public class Window {
 			}
 		});
 		DimSlider.setValue(3);
-		DimSlider.setMinimum(3);
+		DimSlider.setMinimum(5);
 		DimSlider.setMaximum(13);
-		DimSlider.setBounds(142, 6, 122, 26);
+		DimSlider.setBounds(142, 10, 122, 20);
 		frame.getContentPane().add(DimSlider);
 
 		JLabel lblNmeroDeDrages = new JLabel("N\u00FAmero de drag\u00F5es");
-		lblNmeroDeDrages.setBounds(10, 36, 142, 14);
+		lblNmeroDeDrages.setBounds(10, 35, 142, 20);
 		frame.getContentPane().add(lblNmeroDeDrages);
 
 		DragonsField = new JTextField();
-		DragonsField.setBounds(142, 33, 86, 20);
+		DragonsField.setBounds(142, 35, 20, 20);
 		frame.getContentPane().add(DragonsField);
 		DragonsField.setColumns(10);
 
 		JLabel lblTipoDeDrages = new JLabel("Tipo de drag\u00F5es");
-		lblTipoDeDrages.setBounds(10, 61, 142, 14);
+		lblTipoDeDrages.setBounds(10, 65, 142, 14);
 		frame.getContentPane().add(lblTipoDeDrages);
 
 		JComboBox<String> comboBox = new JComboBox<String>();
@@ -264,12 +266,12 @@ public class Window {
 				mazePanel.setEnabled(true);
 
 				mazePanel.setMaze(maze.getMaze());
-				txtStatus.setText("Pode jogar!!!!");
+				txtStatus.setText("Pode jogar!");
 
 
 			}
 		});
-		btnGerarNovoLabirinto.setBounds(330, 11, 147, 34);
+		btnGerarNovoLabirinto.setBounds(330, 10, 134, 34);
 		frame.getContentPane().add(btnGerarNovoLabirinto);
 
 		JButton btnTerminarPrograma = new JButton("Terminar programa");
@@ -278,7 +280,7 @@ public class Window {
 				System.exit(0);
 			}
 		});
-		btnTerminarPrograma.setBounds(487, 51, 134, 34);
+		btnTerminarPrograma.setBounds(330, 80, 134, 34);
 		frame.getContentPane().add(btnTerminarPrograma);
 
 		JButton btnCriarLabirinto = new JButton("Criar Labirinto");	
@@ -321,26 +323,28 @@ public class Window {
 				mazePanel.setEnabled(true);
 
 				mazePanel.setMaze(((BuilderWindow) builder).getEquiMaze());
-				txtStatus.setText("Pode jogar!!!!");
+				txtStatus.setText("Pode jogar!");
 
 
 			}
 		});
-		btnCriarLabirinto.setBounds(487, 11, 134, 34);
+		btnCriarLabirinto.setBounds(330, 45, 134, 34);
 		frame.getContentPane().add(btnCriarLabirinto);
 
 
 
 		txtStatus = new JTextField();
+		txtStatus.setHorizontalAlignment(SwingConstants.LEFT);
+		txtStatus.setForeground(Color.BLACK);
 		txtStatus.setEditable(false);
 		txtStatus.setText("Pode gerar novo labirinto!");
-		txtStatus.setBounds(32, 150, 446, 20);
+		txtStatus.setBounds(10, 121, 142, 20);
 		frame.getContentPane().add(txtStatus);
 		txtStatus.setColumns(10);
 
 		mazePanel = new MazePanel(this);
 		mazePanel.setBackground(Color.WHITE);
-		mazePanel.setBounds(32, 180, 0, 0);
+		mazePanel.setBounds(10, 180, 0, 0);
 		frame.getContentPane().add(mazePanel);		
 
 		mazePanel.requestFocus();

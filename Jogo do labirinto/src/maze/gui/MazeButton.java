@@ -33,29 +33,29 @@ public class MazeButton extends JButton implements ActionListener{
 		this.addActionListener(this);
 
 	}
-	
+
 	void resizeIcons(int height, int width){
 		Image img = hero.getImage();
-        Image newimg = img.getScaledInstance(width, height,  java.awt.Image.SCALE_SMOOTH);
-        hero = new ImageIcon(newimg);
-        
-        img = dragon.getImage();
-        newimg = img.getScaledInstance(width, height,  java.awt.Image.SCALE_SMOOTH);
-        dragon = new ImageIcon(newimg);
-        
-        img = sword.getImage();
-        newimg = img.getScaledInstance(width, height,  java.awt.Image.SCALE_SMOOTH);
-        sword = new ImageIcon(newimg);
-        
-        img = brick.getImage();
-        newimg = img.getScaledInstance(width, height,  java.awt.Image.SCALE_SMOOTH);
-        brick = new ImageIcon(newimg);
-        
-        img = exit.getImage();
-        newimg = img.getScaledInstance(width, height,  java.awt.Image.SCALE_SMOOTH);
-        exit = new ImageIcon(newimg);
+		Image newimg = img.getScaledInstance(width, height,  java.awt.Image.SCALE_SMOOTH);
+		hero = new ImageIcon(newimg);
+
+		img = dragon.getImage();
+		newimg = img.getScaledInstance(width, height,  java.awt.Image.SCALE_SMOOTH);
+		dragon = new ImageIcon(newimg);
+
+		img = sword.getImage();
+		newimg = img.getScaledInstance(width, height,  java.awt.Image.SCALE_SMOOTH);
+		sword = new ImageIcon(newimg);
+
+		img = brick.getImage();
+		newimg = img.getScaledInstance(width, height,  java.awt.Image.SCALE_SMOOTH);
+		brick = new ImageIcon(newimg);
+
+		img = exit.getImage();
+		newimg = img.getScaledInstance(width, height,  java.awt.Image.SCALE_SMOOTH);
+		exit = new ImageIcon(newimg);
 	}
-	
+
 	public int getValue() {
 		return value;
 	}
@@ -83,17 +83,18 @@ public class MazeButton extends JButton implements ActionListener{
 
 	public void actionPerformed(ActionEvent e){
 		int initvalue=value;
-		value=(value+1)%6;
+		if(!corner)
+			value=(value+1)%6;
 		boolean redo;
 
 		if(border){
 			if(!corner){
 				if(value==2)
 					value=5;
-				
+
 				else
 					value=1;
-				
+
 				if(value==1){
 					if(initvalue==5){
 						setIcon(brick);
@@ -114,7 +115,7 @@ public class MazeButton extends JButton implements ActionListener{
 
 			do{
 				redo=false;
-				
+
 				//If value is door change to nothing
 				if(value==5)
 					value=0;

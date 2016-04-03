@@ -220,7 +220,7 @@ public class Maze {
 	 *
 	 * @return char symbolizing the sword
 	 */
-	 */
+	 
 	public char getSwordSymbol(){
 		return sword.getSymbol();
 	}
