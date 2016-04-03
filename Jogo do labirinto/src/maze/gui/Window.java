@@ -57,6 +57,10 @@ public class Window {
 
 			mazePanel.setEnabled(false);
 		}
+		else{
+			if(maze.getNumDragonsToKill() == 0)
+				mazePanel.openDoor();
+		}
 	}
 
 	/**

@@ -144,6 +144,10 @@ public class Maze {
 	public char getHeroSymbol(){
 		return hero.getSymbol();
 	}
+	
+	public int getNumDragonsToKill(){
+		return dragons.size();
+	}
 
 	public char getDragonSymbol(){
 		Dragon dragon = dragons.get(0);
