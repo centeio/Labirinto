@@ -87,7 +87,7 @@ public class BuilderWindow extends JFrame {
 
 				}
 				else if(values[1]!=0)
-					JOptionPane.showMessageDialog(frame,"Utilize todos os tijolos");
+					JOptionPane.showMessageDialog(frame,"Falta colocar " + values[1] + " tijolos");
 				else if(values[2]!=0)
 					JOptionPane.showMessageDialog(frame,"Insira o heroi");
 				else if(values[3]!=0)
