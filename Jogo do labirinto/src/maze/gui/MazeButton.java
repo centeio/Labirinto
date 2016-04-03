@@ -1,9 +1,9 @@
 package maze.gui;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 
 
@@ -16,11 +16,12 @@ public class MazeButton extends JButton implements ActionListener{
 
 	public MazeButton(int size, boolean border, boolean corner, BuilderWindow win){
 
-		hero = new ImageIcon("hero.png");		   																																																																																																																		
+		hero = new ImageIcon("hero.png");
 		dragon = new ImageIcon("dragon.png");
 		sword = new ImageIcon("sword.jpg");
 		brick = new ImageIcon("brick.png");
 		exit = new ImageIcon("closed_door.png");
+		resizeIcons(40,40);
 
 		this.win=win;
 		this.border=border;
@@ -32,12 +33,32 @@ public class MazeButton extends JButton implements ActionListener{
 		this.addActionListener(this);
 
 	}
-
+	
+	void resizeIcons(int height, int width){
+		Image img = hero.getImage();
+        Image newimg = img.getScaledInstance(width, height,  java.awt.Image.SCALE_SMOOTH);
+        hero = new ImageIcon(newimg);
+        
+        img = dragon.getImage();
+        newimg = img.getScaledInstance(width, height,  java.awt.Image.SCALE_SMOOTH);
+        dragon = new ImageIcon(newimg);
+        
+        img = sword.getImage();
+        newimg = img.getScaledInstance(width, height,  java.awt.Image.SCALE_SMOOTH);
+        sword = new ImageIcon(newimg);
+        
+        img = brick.getImage();
+        newimg = img.getScaledInstance(width, height,  java.awt.Image.SCALE_SMOOTH);
+        brick = new ImageIcon(newimg);
+        
+        img = exit.getImage();
+        newimg = img.getScaledInstance(width, height,  java.awt.Image.SCALE_SMOOTH);
+        exit = new ImageIcon(newimg);
+	}
+	
 	public int getValue() {
 		return value;
 	}
-
-
 
 	public void setValue(int value) {
 		this.value = value;
