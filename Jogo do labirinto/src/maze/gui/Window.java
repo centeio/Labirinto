@@ -283,7 +283,7 @@ public class Window {
 
 			}
 		});
-		btnGerarNovoLabirinto.setBounds(330, 10, 134, 34);
+		btnGerarNovoLabirinto.setBounds(314, 10, 150, 34);
 		frame.getContentPane().add(btnGerarNovoLabirinto);
 
 		JButton btnTerminarPrograma = new JButton("Terminar programa");
@@ -292,7 +292,7 @@ public class Window {
 				System.exit(0);
 			}
 		});
-		btnTerminarPrograma.setBounds(330, 80, 134, 34);
+		btnTerminarPrograma.setBounds(314, 80, 150, 34);
 		frame.getContentPane().add(btnTerminarPrograma);
 
 		JButton btnCriarLabirinto = new JButton("Criar Labirinto");	
@@ -340,17 +340,17 @@ public class Window {
 
 			}
 		});
-		btnCriarLabirinto.setBounds(330, 45, 134, 34);
+		btnCriarLabirinto.setBounds(314, 45, 150, 34);
 		frame.getContentPane().add(btnCriarLabirinto);
 
 
 
 		txtStatus = new JTextField();
-		txtStatus.setHorizontalAlignment(SwingConstants.LEFT);
+		txtStatus.setHorizontalAlignment(SwingConstants.CENTER);
 		txtStatus.setForeground(Color.BLACK);
 		txtStatus.setEditable(false);
 		txtStatus.setText("Pode gerar novo labirinto!");
-		txtStatus.setBounds(10, 121, 142, 20);
+		txtStatus.setBounds(0, 121, 152, 20);
 		frame.getContentPane().add(txtStatus);
 		txtStatus.setColumns(10);
 
