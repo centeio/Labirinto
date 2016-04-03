@@ -114,7 +114,8 @@ public class MazePanel extends JPanel {
 					}
 
 				}
-			this.requestFocus();
+			if(this.isEnabled())
+				this.requestFocus();
 		}
 
 	}
