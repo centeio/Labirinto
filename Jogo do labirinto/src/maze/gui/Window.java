@@ -22,12 +22,13 @@ import javax.swing.border.LineBorder;
 import java.awt.Color;
 import javax.swing.JSlider;
 import javax.swing.JScrollBar;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 public class Window {
 
 	private JFrame frame;
 	private JFrame builder;
-	private JTextField DimensionField;
 	private JTextField DragonsField;
 	private JTextField txtStatus;
 	private Maze maze;
@@ -39,7 +40,7 @@ public class Window {
 	MazePanel mazePanel;
 
 	public void update(char dir){
-		
+
 		int status = maze.update(dir);
 
 		mazePanel.setMaze(maze.getMaze());
@@ -53,7 +54,7 @@ public class Window {
 			btnOeste.setEnabled(false);
 			btnEste.setEnabled(false);	
 			btnSul.setEnabled(false);
-			
+
 			mazePanel.setEnabled(false);
 		}
 	}
@@ -124,7 +125,7 @@ public class Window {
 	private void initialize() {
 		Window win = this;
 		frame = new JFrame();
-		frame.setBounds(100, 100, 600, 600);
+		frame.setBounds(100, 100, 647, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
@@ -169,20 +170,39 @@ public class Window {
 		frame.getContentPane().add(btnSul);
 
 		JLabel lblDimension = new JLabel("Dimens\u00E3o do labirinto");
-		lblDimension.setBounds(10, 11, 142, 14);
+		lblDimension.setBounds(10, 11, 162, 14);
 		frame.getContentPane().add(lblDimension);
+		
+		JLabel dim = new JLabel("");
+		dim.setBounds(274, 11, 46, 14);
+		frame.getContentPane().add(dim);
+		
+		JSlider DimSlider = new JSlider();
+		DimSlider.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				int value = DimSlider.getValue();
 
-		DimensionField = new JTextField();
-		DimensionField.setBounds(162, 8, 86, 20);
-		frame.getContentPane().add(DimensionField);
-		DimensionField.setColumns(10);
+				if (value%2 == 0) {
+					value++;
+					DimSlider.setValue(value);
+				}
+				 String s = new String();
+				 s += value;
+				dim.setText(s);
+			}
+		});
+		DimSlider.setValue(3);
+		DimSlider.setMinimum(3);
+		DimSlider.setMaximum(13);
+		DimSlider.setBounds(142, 6, 122, 26);
+		frame.getContentPane().add(DimSlider);
 
 		JLabel lblNmeroDeDrages = new JLabel("N\u00FAmero de drag\u00F5es");
 		lblNmeroDeDrages.setBounds(10, 36, 142, 14);
 		frame.getContentPane().add(lblNmeroDeDrages);
 
 		DragonsField = new JTextField();
-		DragonsField.setBounds(162, 33, 86, 20);
+		DragonsField.setBounds(142, 33, 86, 20);
 		frame.getContentPane().add(DragonsField);
 		DragonsField.setColumns(10);
 
@@ -191,7 +211,7 @@ public class Window {
 		frame.getContentPane().add(lblTipoDeDrages);
 
 		JComboBox<String> comboBox = new JComboBox<String>();
-		comboBox.setBounds(162, 58, 150, 20);
+		comboBox.setBounds(142, 58, 150, 20);
 		comboBox.addItem("Estáticos");
 		comboBox.addItem("Dinamicos");
 		comboBox.addItem("Adormecidos");
@@ -203,9 +223,9 @@ public class Window {
 				int mazeSize;
 				int numDragons;
 				MazeBuilder builder = new MazeBuilder();
-				
+
 				try{
-					mazeSize = Integer.parseInt(DimensionField.getText());
+					mazeSize = DimSlider.getValue();
 					numDragons = Integer.parseInt(DragonsField.getText());
 				}
 				catch(NumberFormatException ex){
@@ -219,9 +239,9 @@ public class Window {
 					JOptionPane.showMessageDialog(frame,"Inserir número ímpar");
 					return;
 				}
-				
+
 				mode = (String) comboBox.getSelectedItem();
-				
+
 				if(mode.equals("Estáticos"))
 					maze = new Maze(builder.buildMaze(mazeSize,numDragons), 1);
 				else if ( mode.equals("Dinamicos"))
@@ -229,7 +249,7 @@ public class Window {
 				else
 					maze = new Maze(builder.buildMaze(mazeSize,numDragons), 3);
 
-				
+
 				mazePanel.setMaze(maze.getMaze());
 				mazePanel.setSize(maze.getMaze().length*40, maze.getMaze().length*40);
 
@@ -241,11 +261,11 @@ public class Window {
 
 				mazePanel.setMaze(maze.getMaze());
 				txtStatus.setText("Pode jogar!!!!");
-				
-				
+
+
 			}
 		});
-		btnGerarNovoLabirinto.setBounds(254, 1, 134, 34);
+		btnGerarNovoLabirinto.setBounds(330, 11, 147, 34);
 		frame.getContentPane().add(btnGerarNovoLabirinto);
 
 		JButton btnTerminarPrograma = new JButton("Terminar programa");
@@ -254,16 +274,16 @@ public class Window {
 				System.exit(0);
 			}
 		});
-		btnTerminarPrograma.setBounds(398, 51, 134, 34);
+		btnTerminarPrograma.setBounds(487, 51, 134, 34);
 		frame.getContentPane().add(btnTerminarPrograma);
-		
+
 		JButton btnCriarLabirinto = new JButton("Criar Labirinto");	
 		btnCriarLabirinto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int mazeSize;
-				
+
 				try{
-					mazeSize = Integer.parseInt(DimensionField.getText());
+					mazeSize = DimSlider.getValue();
 				}
 				catch(NumberFormatException ex){
 					JOptionPane.showMessageDialog(frame,"Formato não válido");
@@ -276,18 +296,18 @@ public class Window {
 					JOptionPane.showMessageDialog(frame,"Inserir número ímpar");
 					return;
 				}
-							
+
 				try {
 					builder = new BuilderWindow(mazeSize, win);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}				
-			
+
 
 				mode = (String) comboBox.getSelectedItem();
 
 
-				
+
 				mazePanel.setSize(((BuilderWindow) builder).getEquiMaze().length*40, ((BuilderWindow) builder).getEquiMaze().length*40);
 
 				btnNorte.setEnabled(true);
@@ -298,27 +318,27 @@ public class Window {
 
 				mazePanel.setMaze(((BuilderWindow) builder).getEquiMaze());
 				txtStatus.setText("Pode jogar!!!!");
-				
-				
+
+
 			}
 		});
-		btnCriarLabirinto.setBounds(398, 1, 134, 34);
+		btnCriarLabirinto.setBounds(487, 11, 134, 34);
 		frame.getContentPane().add(btnCriarLabirinto);
 
-		
+
 
 		txtStatus = new JTextField();
 		txtStatus.setEditable(false);
 		txtStatus.setText("Pode gerar novo labirinto!");
-		txtStatus.setBounds(32, 155, 446, 20);
+		txtStatus.setBounds(32, 150, 446, 20);
 		frame.getContentPane().add(txtStatus);
 		txtStatus.setColumns(10);
 
 		mazePanel = new MazePanel(this);
 		mazePanel.setBackground(Color.WHITE);
-		mazePanel.setBounds(32, 242, 0, 0);
-		frame.getContentPane().add(mazePanel);
-		
+		mazePanel.setBounds(32, 180, 0, 0);
+		frame.getContentPane().add(mazePanel);		
+
 		mazePanel.requestFocus();
 	}
 }

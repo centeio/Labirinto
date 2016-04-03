@@ -1,27 +1,11 @@
 package maze.gui;
 
-import maze.logic.*;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import javax.swing.JPanel;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JTextArea;
-import java.awt.Font;
-import java.awt.Image;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.io.File;
 import java.awt.event.ActionEvent;
-import javax.swing.border.LineBorder;
-import java.awt.Color;
-import javax.swing.JSlider;
-import javax.swing.JScrollBar;
+
 
 
 public class MazeButton extends JButton implements ActionListener{
@@ -30,10 +14,8 @@ public class MazeButton extends JButton implements ActionListener{
 	private BuilderWindow win;
 	private boolean border,corner;
 
-
-
 	public MazeButton(int size, boolean border, boolean corner, BuilderWindow win){
-	
+
 		hero = new ImageIcon("hero.png");		   																																																																																																																		
 		dragon = new ImageIcon("dragon.png");
 		sword = new ImageIcon("sword.jpg");
@@ -50,8 +32,6 @@ public class MazeButton extends JButton implements ActionListener{
 		this.addActionListener(this);
 
 	}
-
-
 
 	public int getValue() {
 		return value;
@@ -80,22 +60,19 @@ public class MazeButton extends JButton implements ActionListener{
 		}
 	}
 
-
 	public void actionPerformed(ActionEvent e){
 		int initvalue=value;
 		value=(value+1)%6;
 		boolean redo;
 
-
 		if(border){
 			if(!corner){
-				if(value==2){
+				if(value==2)
 					value=5;
-					initvalue=1;}
-				else{
+				
+				else
 					value=1;
-					initvalue=5;}
-
+				
 				if(value==1){
 					if(initvalue==5){
 						setIcon(brick);
@@ -116,66 +93,24 @@ public class MazeButton extends JButton implements ActionListener{
 
 			do{
 				redo=false;
+				
+				//If value is door change to nothing
 				if(value==5)
 					value=0;
-				switch(value){
-				case 0:
-					setIcon(null);
+
+				//Change button state
+				if(win.getValues()[value] > 0){
 					win.setValue(initvalue,win.getValues()[initvalue]+1);
-					win.setValue(0,win.getValues()[0]-1);
+					win.setValue(value,win.getValues()[value]-1);
 
-					break;
-				case 1:
-
-					if(win.getValues()[1]!=0){
-						win.setValue(initvalue,win.getValues()[initvalue]+1);
-						win.setValue(1,win.getValues()[1]-1);
-
-						setIcon(brick);
-					}
-					else{
-						value=(value+1)%6;
-						redo=true;}
-					break;
-				case 2:
-					System.out.println(win.getValues()[2]);
-					if(win.getValues()[2]!=0){
-						win.setValue(initvalue,win.getValues()[initvalue]+1);
-						win.setValue(2,win.getValues()[2]-1);
-						setIcon(hero);}
-					else{
-						value=(value+1)%6;
-						redo=true;}
-					break;
-				case 3:
-					System.out.println(win.getValues()[3]);
-					if(win.getValues()[3]!=0){
-						win.setValue(initvalue,win.getValues()[initvalue]+1);
-						win.setValue(3,win.getValues()[3]-1);
-						setIcon(sword);}
-					else{
-						value=(value+1)%6;
-						redo=true;}
-					break;
-				case 4:
-					System.out.println(win.getValues()[4]);
-					if(win.getValues()[4]!=0){
-						win.setValue(initvalue,win.getValues()[initvalue]+1);
-						win.setValue(4,win.getValues()[4]-1);
-						setIcon(dragon);}
-					else{
-						value=(value+1)%6;
-						redo=true;}
-					break;
+					setValue(value);
 				}
+				else{
+					value=(value+1)%6;
+					redo=true;}
+
 			}while(redo);
 
 		}
-
-
 	}
-
-
-
-
 }

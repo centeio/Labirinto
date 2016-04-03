@@ -178,9 +178,9 @@ public class BuilderWindow extends JFrame {
 						maze[i][j]='S';
 						break;
 					}
-					System.out.print(maze[i][j]);
+					//System.out.print(maze[i][j]);
 				}
-				System.out.println("");
+				//System.out.println("");
 			}
 
 
