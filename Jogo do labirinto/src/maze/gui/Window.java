@@ -118,6 +118,12 @@ public class Window {
 		initialize();
 	}
 
+	public void testNumDragons(int mazeSize, int numDragons){
+		if(numDragons <= 0 || numDragons >= ((mazeSize-2)*(mazeSize-2))-((mazeSize-2)*(mazeSize -2)/2)-6)
+			throw new IllegalArgumentException();
+
+	}
+
 	public void testArg(int mazeSize){
 		if (mazeSize%2!=1)
 			throw new IllegalArgumentException();
@@ -176,11 +182,11 @@ public class Window {
 		JLabel lblDimension = new JLabel("Dimens\u00E3o do labirinto");
 		lblDimension.setBounds(10, 11, 162, 14);
 		frame.getContentPane().add(lblDimension);
-		
+
 		JLabel dim = new JLabel("");
 		dim.setBounds(274, 11, 46, 14);
 		frame.getContentPane().add(dim);
-		
+
 		JSlider DimSlider = new JSlider();
 		DimSlider.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
@@ -190,13 +196,13 @@ public class Window {
 					value++;
 					DimSlider.setValue(value);
 				}
-				 String s = new String();
-				 s += value;
+				String s = new String();
+				s += value;
 				dim.setText(s);
 			}
 		});
-		DimSlider.setValue(3);
-		DimSlider.setMinimum(3);
+		DimSlider.setValue(5);
+		DimSlider.setMinimum(5);
 		DimSlider.setMaximum(13);
 		DimSlider.setBounds(142, 6, 122, 26);
 		frame.getContentPane().add(DimSlider);
@@ -241,6 +247,13 @@ public class Window {
 					testArg(mazeSize);
 				}catch(IllegalArgumentException answer){
 					JOptionPane.showMessageDialog(frame,"Inserir número ímpar");
+					return;
+				}
+				
+				try{
+					testNumDragons(mazeSize, numDragons);
+				}catch(IllegalArgumentException answer){
+					JOptionPane.showMessageDialog(frame,"Demasiados dragoes");
 					return;
 				}
 
