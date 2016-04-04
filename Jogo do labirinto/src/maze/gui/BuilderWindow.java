@@ -112,35 +112,36 @@ public class BuilderWindow extends JFrame {
 				}
 			}
 		});
-			btnGuardar.setBounds(size*42-50, size*4-200, 50, 200);
-			options.add(btnGuardar);
+		btnGuardar.setBounds(size*42-50, size*4-200, 50, 200);
+		options.add(btnGuardar);
 
-			requestFocus(); 
+		requestFocus(); 
 
-		}
+	}
 
-		private void visit(char[][] m, int i, int j, boolean [][] visited) {
-			if (i < 0 || i >= m.length || j < 0 || j >= m.length)
-				return;
-			if (m[i][j] == 'X' || visited[i][j])
-				return;
-			visited[i][j] = true;
-			visit(m, i-1, j, visited);
-			visit(m, i+1, j, visited);
-			visit(m, i, j-1, visited);
-			visit(m, i, j+1, visited);
-		}
+	private void visit(char[][] m, int i, int j, boolean [][] visited) {
+		if (i < 0 || i >= m.length || j < 0 || j >= m.length)
+			return;
+		if (m[i][j] == 'X' || visited[i][j])
+			return;
+		visited[i][j] = true;
+		visit(m, i-1, j, visited);
+		visit(m, i+1, j, visited);
+		visit(m, i, j-1, visited);
+		visit(m, i, j+1, visited);
+	}
 
-		private Point findPos(char [][] maze, char c) {
-			for (int x = 0; x < maze.length; x++)			
-				for (int y = 0; y < maze.length; y++)
-					if (maze[y][x] == c)
-						return new Point(y, x);
-			return null;		
-		}
+	private Point findPos(char [][] maze, char c) {
+		for (int x = 0; x < maze.length; x++)			
+			for (int y = 0; y < maze.length; y++)
+				if (maze[y][x] == c)
+					return new Point(y, x);
+		return null;		
+	}
 
-		private boolean exitReachable(char [][] maze) {
-			Point p = findPos(maze, 'S');
+	private boolean exitReachable(char [][] maze) {
+		Point p = findPos(maze, 'S');
+		if(p!=null){
 			boolean [][] visited = new boolean[maze.length] [maze.length];
 
 			visit(maze, p.getY(), p.getX(), visited);
@@ -150,54 +151,56 @@ public class BuilderWindow extends JFrame {
 					if (maze[i][j] != 'X' && ! visited[i][j] )
 						return false;
 
-			return true; 
-		}
-
-		public char[][] getEquiMaze(){
-			int size=positions.length;
-			char[][] maze= new char[size][size];
-			for(int i=0;i<size;i++){
-				for(int j=0;j<size;j++){
-					switch(positions[i][j].getValue()){
-					case 0:
-						maze[i][j]=' ';
-						break;
-					case 1:
-						maze[i][j]='X';
-						break;
-					case 2:
-						maze[i][j]='H';
-						break;
-					case 3:
-						maze[i][j]='E';
-						break;
-					case 4:
-						maze[i][j]='D';
-						break;
-					case 5:
-						maze[i][j]='S';
-						break;
-					}
-					//System.out.print(maze[i][j]);
-				}
-				//System.out.println("");
-			}
-
-
-			return maze;
-		}
-
-		public int[] getValues(){
-			return values;
-		}
-
-		public void setValue(int pos, int value){
-			if(pos>=0 && pos<6)
-				values[pos]=value;
-		}
-
-		public boolean getSaved(){
-			return saved;
-		}
-
+			return true; }
+		else 
+			return false;
 	}
+
+	public char[][] getEquiMaze(){
+		int size=positions.length;
+		char[][] maze= new char[size][size];
+		for(int i=0;i<size;i++){
+			for(int j=0;j<size;j++){
+				switch(positions[i][j].getValue()){
+				case 0:
+					maze[i][j]=' ';
+					break;
+				case 1:
+					maze[i][j]='X';
+					break;
+				case 2:
+					maze[i][j]='H';
+					break;
+				case 3:
+					maze[i][j]='E';
+					break;
+				case 4:
+					maze[i][j]='D';
+					break;
+				case 5:
+					maze[i][j]='S';
+					break;
+				}
+				//System.out.print(maze[i][j]);
+			}
+			//System.out.println("");
+		}
+
+
+		return maze;
+	}
+
+	public int[] getValues(){
+		return values;
+	}
+
+	public void setValue(int pos, int value){
+		if(pos>=0 && pos<6)
+			values[pos]=value;
+	}
+
+	public boolean getSaved(){
+		return saved;
+	}
+
+}
