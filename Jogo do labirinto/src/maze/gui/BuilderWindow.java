@@ -98,7 +98,7 @@ public class BuilderWindow extends JDialog {
 					JOptionPane.showMessageDialog(frame,"Insira o heroi");
 				else if(values[3]!=0)
 					JOptionPane.showMessageDialog(frame,"Insira a espada");
-				else if(values[4]==(size-2)*(size-2)-values[1]-values[2]-values[3]-4)
+				else if(values[4]==(size-2)*(size-2)-(2*((size-2)/2)*((size-2)/2))-6)
 					JOptionPane.showMessageDialog(frame,"Insira um dragao");
 				else if(values[5]!=0)
 					JOptionPane.showMessageDialog(frame,"Insira a saida");

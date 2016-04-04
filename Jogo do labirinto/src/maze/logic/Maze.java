@@ -21,7 +21,7 @@ public class Maze {
 	private Hero hero;
 	
 	/** The dragons. */
-	private Vector<Dragon> dragons = new Vector<Dragon>();;
+	private Vector<Dragon> dragons = new Vector<Dragon>();
 	
 	/** The sword. */
 	private Sword sword;
