@@ -51,6 +51,8 @@ public class Window {
 				JOptionPane.showMessageDialog(frame,"Ganhou!");
 			if(status == 2)
 				JOptionPane.showMessageDialog(frame,"Perdeu...");
+			
+			txtStatus.setText("Pode jogar!");
 
 			btnNorte.setEnabled(false);
 			btnOeste.setEnabled(false);

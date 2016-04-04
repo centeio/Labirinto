@@ -151,7 +151,8 @@ public class BuilderWindow extends JFrame {
 					if (maze[i][j] != 'X' && ! visited[i][j] )
 						return false;
 
-			return true; }
+			return true; 
+			}
 		else 
 			return false;
 	}
