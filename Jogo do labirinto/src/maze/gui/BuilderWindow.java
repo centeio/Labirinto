@@ -6,8 +6,10 @@ import maze.test.TestMazeBuilder.Point;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.JPanel;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
@@ -20,35 +22,39 @@ import java.io.IOException;
 import java.awt.event.ActionEvent;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
+import java.awt.EventQueue;
+
 import javax.swing.JSlider;
 import javax.swing.JScrollBar;
 
-public class BuilderWindow extends JFrame {
+public class BuilderWindow extends JDialog {
 	private MazeButton[][] positions;
 	private int values[];
 	private JPanel panel;
 	private JPanel options;
-	private boolean saved;
+	char[][] maze;
 
-	public BuilderWindow(int size, Window win) throws IOException{
-		JFrame frame=this;
-		win.getFrame().setEnabled(false);
+	public BuilderWindow(){};
+	
+	public BuilderWindow(int size, Window win, char[][] maze) throws IOException{
+		super(win.getFrame(),true);
+		BuilderWindow frame=this;
 
-		setBounds(100, 100, size*42, size*42+70);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, size*42, size*42+60);
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(null);
 
-		saved=false;
 		positions = new MazeButton[size][size];
 		panel= new JPanel();
 		panel.setBounds(0, 0, size*40, size*40);
-
 		panel.setLayout(new GridLayout(size,size));
 
-		options= new JPanel();
-		options.setBounds(0, size*40, size*40, size*40);
+		this.maze=maze;
 
-		options.setLayout(new GridLayout(size,size));
+		options= new JPanel();
+		options.setBounds(0, size*40, size*40, 60);
+
+		options.setLayout(new GridLayout(2,1));
 
 		values=new int[6];
 		values[0]=size*size-4*size-4;
@@ -62,28 +68,26 @@ public class BuilderWindow extends JFrame {
 			for(int j=0;j<size;j++){
 				if(i==0||j==0 || i==size-1 || j==size-1){
 					if((i==0&&j==size-1)||(j==0&&i==size-1)||(i==0&&j==0)||(j==size-1&&i==size-1))
-						positions[i][j]=new MazeButton(size,true,true,this);
+						positions[i][j]=new MazeButton(size,true,true,frame, i, j);
 					else
-						positions[i][j]=new MazeButton(size,true,false,this);
+						positions[i][j]=new MazeButton(size,true,false,frame, i, j);
+					this.maze[i][j]='X';
 				}
-				else
-					positions[i][j]=new MazeButton(size,false,false,this);
+				else{
+					positions[i][j]=new MazeButton(size,false,false,frame, i, j);
+					this.maze[i][j]=' ';
+				}
 				panel.add(positions[i][j]);
 
 			}
 		}
-		add(panel);
-		add(options);
-		setVisible(true);
-		setEnabled(true);
-
 
 
 		JButton btnGuardar = new JButton("Guardar");
 		btnGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(!exitReachable(getEquiMaze())){
-					JOptionPane.showMessageDialog(frame,"Labirinto impossível");
+				if(!exitReachable(maze)){
+					JOptionPane.showMessageDialog(frame,"Labirinto impossivel");
 
 				}
 				else if(values[1]!=0)
@@ -95,35 +99,39 @@ public class BuilderWindow extends JFrame {
 				else if(values[4]==(size-2)*(size-2)-values[1]-values[2]-values[3]-4)
 					JOptionPane.showMessageDialog(frame,"Insira um dragao");
 				else if(values[5]!=0)
-					JOptionPane.showMessageDialog(frame,"Insira a saída");
-				else{
-					setVisible(false);
-					win.getFrame().setEnabled(true);
-					if(win.getMode().equals("Estáticos"))
-						win.setMaze(new Maze(getEquiMaze(), 1));
-					else if ( win.getMode().equals("Dinamicos"))
-						win.setMaze(new Maze(getEquiMaze(), 2));
-					else
-						win.setMaze(new Maze(getEquiMaze(), 3));
-					saved=true;
-					win.getFrame().setEnabled(true);
-					win.getFrame().requestFocus();
-					win.update('p');
-				}
+					JOptionPane.showMessageDialog(frame,"Insira a saida");
+				else
+					dispose();
 			}
+
 		});
-		btnGuardar.setBounds(size*42-50, size*4-200, 50, 200);
 		options.add(btnGuardar);
+		
+		add(panel);
+		add(options);
+		
+		EventQueue.invokeLater(new Runnable(){
+            @Override
+            public void run()
+            {
+        		JOptionPane.showMessageDialog(null,"Clique nos quadrados para alterar. Deve incluir um heroi, uma espada e o max de tijolos. No final, guarde.");
+            }
+        });
+		
+		setVisible(true);
+		setEnabled(true);
 
 		requestFocus(); 
-
+		
+		
 	}
+
 
 	private void visit(char[][] m, int i, int j, boolean [][] visited) {
 		if (i < 0 || i >= m.length || j < 0 || j >= m.length)
-			return;
+			return ;
 		if (m[i][j] == 'X' || visited[i][j])
-			return;
+			return ;
 		visited[i][j] = true;
 		visit(m, i-1, j, visited);
 		visit(m, i+1, j, visited);
@@ -152,44 +160,11 @@ public class BuilderWindow extends JFrame {
 						return false;
 
 			return true; 
-			}
+		}
 		else 
 			return false;
 	}
 
-	public char[][] getEquiMaze(){
-		int size=positions.length;
-		char[][] maze= new char[size][size];
-		for(int i=0;i<size;i++){
-			for(int j=0;j<size;j++){
-				switch(positions[i][j].getValue()){
-				case 0:
-					maze[i][j]=' ';
-					break;
-				case 1:
-					maze[i][j]='X';
-					break;
-				case 2:
-					maze[i][j]='H';
-					break;
-				case 3:
-					maze[i][j]='E';
-					break;
-				case 4:
-					maze[i][j]='D';
-					break;
-				case 5:
-					maze[i][j]='S';
-					break;
-				}
-				//System.out.print(maze[i][j]);
-			}
-			//System.out.println("");
-		}
-
-
-		return maze;
-	}
 
 	public int[] getValues(){
 		return values;
@@ -200,8 +175,27 @@ public class BuilderWindow extends JFrame {
 			values[pos]=value;
 	}
 
-	public boolean getSaved(){
-		return saved;
+
+	public char[][] getMaze() {
+		return maze;
 	}
+
+
+	public void setMaze(char[][] maze) {
+		this.maze = maze;
+	}
+
+
+	public MazeButton[][] getPositions() {
+		return positions;
+	}
+
+
+	public void setPositions(MazeButton[][] positions) {
+		this.positions = positions;
+	}
+
+
+
 
 }

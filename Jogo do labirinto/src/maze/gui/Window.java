@@ -5,11 +5,14 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 
 import maze.logic.*;
+import maze.test.TestMazeBuilder.Point;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JPanel;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import java.awt.Font;
@@ -30,7 +33,7 @@ import javax.swing.SwingConstants;
 public class Window {
 
 	private JFrame frame;
-	private JFrame builder;
+	private JDialog mbuilder;
 	private JTextField DragonsField;
 	private JTextField txtStatus;
 	private Maze maze;
@@ -39,7 +42,9 @@ public class Window {
 	private	JButton btnEste;
 	private JButton btnSul;
 	private String mode;
+	private int values[];
 	MazePanel mazePanel;
+	char[][] bmaze;
 
 	public void update(char dir){
 
@@ -51,7 +56,7 @@ public class Window {
 				JOptionPane.showMessageDialog(frame,"Ganhou!");
 			if(status == 2)
 				JOptionPane.showMessageDialog(frame,"Perdeu...");
-			
+
 			txtStatus.setText("Pode gerar novo labirinto!");
 
 			btnNorte.setEnabled(false);
@@ -121,7 +126,7 @@ public class Window {
 	public Window() {
 		initialize();
 	}
-	
+
 	public void testNumDragons(int mazeSize, int numDragons){
 		if (numDragons <= 0 || numDragons > ((mazeSize -2)*(mazeSize -2)) - 2*((mazeSize -2)/2 * (mazeSize -2)/2) -6)
 			throw new IllegalArgumentException();
@@ -141,7 +146,7 @@ public class Window {
 		frame.setBounds(100, 100, 487, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
+
 		btnNorte = new JButton("\u2191");
 		btnNorte.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -185,11 +190,11 @@ public class Window {
 		JLabel lblDimension = new JLabel("Dimens\u00E3o do labirinto");
 		lblDimension.setBounds(10, 10, 162, 20);
 		frame.getContentPane().add(lblDimension);
-		
+
 		JLabel dim = new JLabel("");
 		dim.setBounds(274, 11, 46, 14);
 		frame.getContentPane().add(dim);
-		
+
 		JSlider DimSlider = new JSlider();
 		DimSlider.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
@@ -199,8 +204,8 @@ public class Window {
 					value++;
 					DimSlider.setValue(value);
 				}
-				 String s = new String();
-				 s += value;
+				String s = new String();
+				s += value;
 				dim.setText(s);
 			}
 		});
@@ -252,7 +257,7 @@ public class Window {
 					JOptionPane.showMessageDialog(frame,"Inserir número ímpar");
 					return;
 				}
-				
+
 				try{
 					testNumDragons(mazeSize, numDragons);
 				}catch(IllegalArgumentException answer){
@@ -310,36 +315,49 @@ public class Window {
 					return;
 				}
 
+				bmaze = new char[mazeSize][mazeSize];
+
 				try{
 					testMazeSize(mazeSize);
 				}catch(IllegalArgumentException answer){
 					JOptionPane.showMessageDialog(frame,"Inserir número ímpar");
 					return;
 				}
-
+				
+				
 				try {
-					builder = new BuilderWindow(mazeSize, win);
+					mbuilder = new BuilderWindow(mazeSize, win, bmaze);
 				} catch (IOException e1) {
 					e1.printStackTrace();
-				}				
-
+				}
 
 				mode = (String) comboBox.getSelectedItem();
+				values = new int[6];
+
+				if(exitReachable(bmaze)||values[1]==0||values[2]==0||values[3]==0||
+						values[4]!=(mazeSize-2)*(mazeSize-2)-values[1]-values[2]-values[3]-4||values[5]==0){
+					if(mode.equals("Estáticos"))
+						win.setMaze(new Maze(bmaze, 1));
+					else if (mode.equals("Dinamicos"))
+						win.setMaze(new Maze(bmaze, 2));
+					else
+						win.setMaze(new Maze(bmaze, 3));
 
 
+					mazePanel.setSize(((BuilderWindow) mbuilder).getMaze().length*40, ((BuilderWindow) mbuilder).getMaze().length*40);
 
-				mazePanel.setSize(((BuilderWindow) builder).getEquiMaze().length*40, ((BuilderWindow) builder).getEquiMaze().length*40);
+					btnNorte.setEnabled(true);
+					btnOeste.setEnabled(true);
+					btnEste.setEnabled(true);	
+					btnSul.setEnabled(true);
+					mazePanel.setEnabled(true);
 
-				btnNorte.setEnabled(true);
-				btnOeste.setEnabled(true);
-				btnEste.setEnabled(true);	
-				btnSul.setEnabled(true);
-				mazePanel.setEnabled(true);
-
-				mazePanel.setMaze(((BuilderWindow) builder).getEquiMaze());
-				txtStatus.setText("Pode jogar!");
+					mazePanel.setMaze(((BuilderWindow) mbuilder).getMaze());
+					update(' ');
+					txtStatus.setText("Pode jogar!");
 
 
+				}
 			}
 		});
 		btnCriarLabirinto.setBounds(314, 45, 150, 34);
@@ -363,5 +381,43 @@ public class Window {
 		frame.getContentPane().add(mazePanel);		
 
 		mazePanel.requestFocus();
+	}
+
+	private void visit(char[][] m, int i, int j, boolean [][] visited) {
+		if (i < 0 || i >= m.length || j < 0 || j >= m.length)
+			return ;
+		if (m[i][j] == 'X' || visited[i][j])
+			return ;
+		visited[i][j] = true;
+		visit(m, i-1, j, visited);
+		visit(m, i+1, j, visited);
+		visit(m, i, j-1, visited);
+		visit(m, i, j+1, visited);
+	}
+
+	private Point findPos(char [][] maze, char c) {
+		for (int x = 0; x < maze.length; x++)			
+			for (int y = 0; y < maze.length; y++)
+				if (maze[y][x] == c)
+					return new Point(y, x);
+		return null;		
+	}
+
+	private boolean exitReachable(char [][] maze) {
+		Point p = findPos(maze, 'S');
+		if(p!=null){
+			boolean [][] visited = new boolean[maze.length] [maze.length];
+
+			visit(maze, p.getY(), p.getX(), visited);
+
+			for (int i = 0; i < maze.length; i++)
+				for (int j = 0; j < maze.length; j++)
+					if (maze[i][j] != 'X' && ! visited[i][j] )
+						return false;
+
+			return true; 
+		}
+		else 
+			return false;
 	}
 }

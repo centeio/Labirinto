@@ -10,11 +10,11 @@ import java.awt.event.ActionEvent;
 
 public class MazeButton extends JButton implements ActionListener{
 	private ImageIcon brick, hero, sword, dragon, exit;
-	private int value = 0;
+	private int value = 0, x, y;
 	private BuilderWindow win;
 	private boolean border,corner;
 
-	public MazeButton(int size, boolean border, boolean corner, BuilderWindow win){
+	public MazeButton(int size, boolean border, boolean corner, BuilderWindow win, int x, int y){
 
 		hero = new ImageIcon("hero.png");
 		dragon = new ImageIcon("dragon.png");
@@ -26,6 +26,8 @@ public class MazeButton extends JButton implements ActionListener{
 		this.win=win;
 		this.border=border;
 		this.corner=corner;
+		this.x=x;
+		this.y=y;
 
 		if(border)
 			setValue(1);
@@ -133,6 +135,34 @@ public class MazeButton extends JButton implements ActionListener{
 
 			}while(redo);
 
+
+			//System.out.print(maze[i][j]);
 		}
+		//System.out.println("");
+
+
+		switch(value){
+		case 0:
+			win.getMaze()[x][y]=' ';
+			break;
+		case 1:
+			win.getMaze()[x][y]='X';
+			break;
+		case 2:
+			win.getMaze()[x][y]='H';
+			break;
+		case 3:
+			win.getMaze()[x][y]='E';
+			break;
+		case 4:
+			win.getMaze()[x][y]='D';
+			break;
+		case 5:
+			win.getMaze()[x][y]='S';
+			break;
+		}
+
 	}
+
+
 }
