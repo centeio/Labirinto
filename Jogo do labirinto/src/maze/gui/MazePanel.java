@@ -82,6 +82,11 @@ public class MazePanel extends JPanel {
 	}
 	public void setMaze(char[][] maze){
 		this.maze = maze;
+		try {
+			exit = ImageIO.read(new File("closed_door.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		repaint();
 	}
 
