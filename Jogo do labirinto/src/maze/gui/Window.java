@@ -52,7 +52,7 @@ public class Window {
 			if(status == 2)
 				JOptionPane.showMessageDialog(frame,"Perdeu...");
 			
-			txtStatus.setText("Pode jogar!");
+			txtStatus.setText("Pode gerar novo labirinto!");
 
 			btnNorte.setEnabled(false);
 			btnOeste.setEnabled(false);
@@ -141,7 +141,7 @@ public class Window {
 		frame.setBounds(100, 100, 487, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-
+		
 		btnNorte = new JButton("\u2191");
 		btnNorte.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -353,6 +353,7 @@ public class Window {
 		txtStatus.setEditable(false);
 		txtStatus.setText("Pode gerar novo labirinto!");
 		txtStatus.setBounds(0, 121, 152, 20);
+		txtStatus.setBorder(null);
 		frame.getContentPane().add(txtStatus);
 		txtStatus.setColumns(10);
 
