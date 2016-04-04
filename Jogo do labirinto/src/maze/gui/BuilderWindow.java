@@ -32,11 +32,12 @@ public class BuilderWindow extends JDialog {
 	private int values[];
 	private JPanel panel;
 	private JPanel options;
+	private int possible;
 	char[][] maze;
 
 	public BuilderWindow(){};
-	
-	public BuilderWindow(int size, Window win, char[][] maze) throws IOException{
+
+	public BuilderWindow(int size, Window win, char[][] maze, int possible) throws IOException{
 		super(win.getFrame(),true);
 		BuilderWindow frame=this;
 
@@ -50,6 +51,7 @@ public class BuilderWindow extends JDialog {
 		panel.setLayout(new GridLayout(size,size));
 
 		this.maze=maze;
+		this.possible=possible;
 
 		options= new JPanel();
 		options.setBounds(0, size*40, size*40, 60);
@@ -100,30 +102,32 @@ public class BuilderWindow extends JDialog {
 					JOptionPane.showMessageDialog(frame,"Insira um dragao");
 				else if(values[5]!=0)
 					JOptionPane.showMessageDialog(frame,"Insira a saida");
-				else
+				else{
+					frame.possible=1;
 					dispose();
+				}
 			}
 
 		});
 		options.add(btnGuardar);
-		
+
 		add(panel);
 		add(options);
-		
+
 		EventQueue.invokeLater(new Runnable(){
-            @Override
-            public void run()
-            {
-        		JOptionPane.showMessageDialog(null,"Clique nos quadrados para alterar. Deve incluir um heroi, uma espada e o max de tijolos. No final, guarde.");
-            }
-        });
-		
+			@Override
+			public void run()
+			{
+				JOptionPane.showMessageDialog(null,"Clique nos quadrados para alterar. Deve incluir um heroi, uma espada e o max de tijolos. No final, guarde.");
+			}
+		});
+
 		setVisible(true);
 		setEnabled(true);
 
 		requestFocus(); 
-		
-		
+
+
 	}
 
 
@@ -170,6 +174,10 @@ public class BuilderWindow extends JDialog {
 		return values;
 	}
 
+	public int getPossible(){
+		return possible;
+	}
+	
 	public void setValue(int pos, int value){
 		if(pos>=0 && pos<6)
 			values[pos]=value;

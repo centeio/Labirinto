@@ -287,6 +287,7 @@ public class Window {
 				mazePanel.setMaze(maze.getMaze());
 				txtStatus.setText("Pode jogar!");
 
+				JOptionPane.showMessageDialog(null,"Clique nas setas ou pressione as setas do teclado para jogar. \n Deve dirigir-se à espada, matar os dragoes e ir ate a porta.");
 
 			}
 		});
@@ -306,6 +307,9 @@ public class Window {
 		btnCriarLabirinto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int mazeSize;
+				int possible;
+
+				possible = 0;
 
 				try{
 					mazeSize = DimSlider.getValue();
@@ -323,19 +327,19 @@ public class Window {
 					JOptionPane.showMessageDialog(frame,"Inserir número ímpar");
 					return;
 				}
-				
-				
+
+
+
 				try {
-					mbuilder = new BuilderWindow(mazeSize, win, bmaze);
+					mbuilder = new BuilderWindow(mazeSize, win, bmaze, possible);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
 
 				mode = (String) comboBox.getSelectedItem();
 				values = new int[6];
-
-				if(exitReachable(bmaze)||values[1]==0||values[2]==0||values[3]==0||
-						values[4]!=(mazeSize-2)*(mazeSize-2)-values[1]-values[2]-values[3]-4||values[5]==0){
+				System.out.println(possible);
+				if(((BuilderWindow) mbuilder).getPossible()==1){
 					if(mode.equals("Estáticos"))
 						win.setMaze(new Maze(bmaze, 1));
 					else if (mode.equals("Dinamicos"))
@@ -355,7 +359,7 @@ public class Window {
 					mazePanel.setMaze(((BuilderWindow) mbuilder).getMaze());
 					update(' ');
 					txtStatus.setText("Pode jogar!");
-
+					JOptionPane.showMessageDialog(null,"Clique nas setas ou pressione as setas do teclado para jogar. \n Deve dirigir-se à espada, matar os dragoes e ir ate a porta.");
 
 				}
 			}
@@ -380,44 +384,8 @@ public class Window {
 		mazePanel.setBounds(10, 180, 0, 0);
 		frame.getContentPane().add(mazePanel);		
 
+
 		mazePanel.requestFocus();
 	}
 
-	private void visit(char[][] m, int i, int j, boolean [][] visited) {
-		if (i < 0 || i >= m.length || j < 0 || j >= m.length)
-			return ;
-		if (m[i][j] == 'X' || visited[i][j])
-			return ;
-		visited[i][j] = true;
-		visit(m, i-1, j, visited);
-		visit(m, i+1, j, visited);
-		visit(m, i, j-1, visited);
-		visit(m, i, j+1, visited);
-	}
-
-	private Point findPos(char [][] maze, char c) {
-		for (int x = 0; x < maze.length; x++)			
-			for (int y = 0; y < maze.length; y++)
-				if (maze[y][x] == c)
-					return new Point(y, x);
-		return null;		
-	}
-
-	private boolean exitReachable(char [][] maze) {
-		Point p = findPos(maze, 'S');
-		if(p!=null){
-			boolean [][] visited = new boolean[maze.length] [maze.length];
-
-			visit(maze, p.getY(), p.getX(), visited);
-
-			for (int i = 0; i < maze.length; i++)
-				for (int j = 0; j < maze.length; j++)
-					if (maze[i][j] != 'X' && ! visited[i][j] )
-						return false;
-
-			return true; 
-		}
-		else 
-			return false;
-	}
 }
