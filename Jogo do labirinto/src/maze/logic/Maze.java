@@ -133,7 +133,7 @@ public class Maze {
 		int i = 0;
 		while( i < dragons.size()){
 			if((status == MazeStatus.HeroArmed ||  status == MazeStatus.HeroSlayed)&&  hero.getPosition().equals(dragons.get(i).getPosition())){
-				dragons.get(i).kill();
+				//TODO see if function can be removed: dragons.get(i).kill();
 				dragons.remove(dragons.get(i));
 				status = MazeStatus.HeroSlayed;
 			}

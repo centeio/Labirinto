@@ -28,8 +28,7 @@ public class Dragon extends Piece{
 	public enum State{
 		
 		/** Dragon is awake and able to kill */ AWAKE, 
-		/** Dragon is asleep and temporarily unable of murder */ ASLEEP, 
-		/** Dragon is dead */ DEAD
+		/** Dragon is asleep and temporarily unable of murder */ ASLEEP
 	}
 	
 	/** Dragon's state. */
@@ -44,14 +43,6 @@ public class Dragon extends Piece{
 	public Dragon(int x, int  y){
 		super(x,y,'D');
 		state = State.AWAKE;
-	}
-
-	/**
-	 * Kills dragon
-	 */
-	public void kill(){
-		state = State.DEAD;
-		symbol = ' ';
 	}
 
 	/**
@@ -80,7 +71,7 @@ public class Dragon extends Piece{
 		Random r = new Random();
 		boolean change = r.nextBoolean();
 
-		if(state != State.DEAD && mode != Mode.STILL){
+		if(mode != Mode.STILL){
 			if(change && mode == Mode.SLEEP){
 				if(state == State.ASLEEP)
 					wakeUp();

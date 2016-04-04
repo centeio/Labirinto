@@ -15,6 +15,12 @@ public class TestMazeWithStaticDragon {
 	@Test
 	public void testMoveHeroToFreeCell() {
 		Maze maze = new Maze(m1,STAY);
+		String board = "X X X X X \n"
+					 + "X     H S \n"
+					 + "X   X   X \n"
+					 + "X E D D X \n"
+					 + "X X X X X \n";
+		assertEquals(board, maze.toString());
 		assertEquals(new Point(3,1), maze.getHeroPosition());
 		maze.update('o');
 		assertEquals(new Point(2,1), maze.getHeroPosition());
@@ -23,8 +29,11 @@ public class TestMazeWithStaticDragon {
 	@Test
 	public void testMoveHeroToWallCell() {
 		Maze maze = new Maze(m1,STAY);
-		maze.update('n');
+		assertEquals(0, maze.update('n'));
 		assertEquals(new Point(3,1), maze.getHeroPosition());
+		assertEquals(0, maze.update('e'));
+		assertEquals(0, maze.update('e'));
+		assertEquals(new Point(4,1), maze.getHeroPosition());
 	}
 	
 	@Test
@@ -62,6 +71,7 @@ public class TestMazeWithStaticDragon {
 		maze.update('e');
 		maze.update('e');
 		assertEquals(MazeStatus.HeroSlayed, maze.getStatus());
+		assertEquals(0, maze.getNumDragonsToKill());
 	}
 	
 	@Test
@@ -83,8 +93,6 @@ public class TestMazeWithStaticDragon {
 		
 		assertEquals(1,maze.update('e'));
 		assertEquals(MazeStatus.HeroWon, maze.getStatus());
-		
-		System.out.println(maze);
 	}
 }
 
